@@ -66,8 +66,8 @@ To specify a location for the task, simply type "loc" or "at", followed by the l
 
 To add recurring tasks, use every [index] day(s)/week(s)/month(s)/year(s) for [index] times. For example
 
-  add task from today to tomorrow every 2 days for 2 times
-  add task from today to tomorrow every 1 month for 5 times
+	add task from today to tomorrow every 2 days for 2 times
+	add task from today to tomorrow every 1 month for 5 times
 
 Note that an ending time is always required when adding recurring tasks.
 
