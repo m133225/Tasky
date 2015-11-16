@@ -13,7 +13,6 @@ import org.junit.Test;
 
 public class TestLogicAdd {
     Logic logicObject;
-    //@@author A0132760M
     /*
      * Helper functions
      */

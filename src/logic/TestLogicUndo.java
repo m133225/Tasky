@@ -12,16 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TestLogicUndo {
-    
-Logic logicObject;
+    Logic logicObject;
 
-    //@@author A0108355H
     public void addHelper(Task newTask) {
         logicObject.listOfTasks.add(newTask);
         logicObject.listOfShownTasks.add(newTask);
     }
     
-    //@@author A0108355H
     @Before
     public void setup(){
         logicObject = new Logic();
@@ -29,7 +26,6 @@ Logic logicObject;
         saveFile.delete();
     }
     
-    //@@author A0108355H
     //test undo without any next execution
     @Test
     public void logicUndoEmpty() throws Exception{
@@ -37,7 +33,6 @@ Logic logicObject;
         assertEquals("Error: No history found.", message);
     }
     
-    //@@author A0108355H
     //test undo before add
     @Test
     public void logicUndoAdd(){
@@ -49,7 +44,7 @@ Logic logicObject;
         String message = logicObject.undoCommand();        
         assertEquals("Undo : Added item(s) removed.", message);
     }
-    //@@author A0108355H
+
     //test undo before multiple delete
     @Test
     public void logicUndoMultipleDelete(){
@@ -69,7 +64,6 @@ Logic logicObject;
         assertEquals("Undo : Deleted item(s) restored.", message);
     }
     
-    //@@author A0108355H
     //test undo before edit
     @Test
     public void logicUndoEdit(){

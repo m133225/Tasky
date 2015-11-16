@@ -14,7 +14,6 @@ import org.junit.Test;
 public class TestLogicHelpers {
     Logic logicObject;
     
-    //@@author A0132760M
     @Before
     public void setup(){
         File saveFile = new File("save.txt");

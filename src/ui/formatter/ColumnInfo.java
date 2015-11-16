@@ -1,6 +1,5 @@
 package ui.formatter;
 
-//@@author A0134155M
 /**
  * This is a data structure that contains column name and needed width for 
  * a column.

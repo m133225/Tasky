@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-//@@author A0134155M
 /**
  * This class serves as the main layout for GraphicalUI<br>
  * @see ui.GraphicalUI

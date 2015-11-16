@@ -2,7 +2,6 @@ package ui.formatter;
 
 import global.Pair;
 
-//@@author A0134155M
 /**
  * This class is used to convert/format an object array containing all data of a 
  * <code>Task</code> object into its string value so that it can be processed by JTable.

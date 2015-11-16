@@ -24,7 +24,6 @@ public class TaskTableModel extends AbstractTableModel {
     private Object[][] data = null;
     private Boolean[] isDone;
     
-    //@@author A0134155M
     /**
      * Initialize TaskTableModel with 2D object array taskListData where the first dimension
      * is an array of tasks data, and the second dimension describes each field of the task.
@@ -43,31 +42,26 @@ public class TaskTableModel extends AbstractTableModel {
         isDone = formattedData.getSecond();
     }
     
-    //@@author A0134155M
     @Override
     public String getColumnName(int column) {
         return columnNames[column];
     }
     
-    //@@author A0134155M
     @Override
     public int getRowCount() {
         return data.length;
     }
 
-    //@@author A0134155M
     @Override
     public int getColumnCount() {
         return columnNames.length;
     }
 
-    //@@author A0134155M
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return data[rowIndex][columnIndex];
     }
     
-    //@@author A0134155M
     /**
      * Returns whether task at particular index has been done or not.
      * @param taskIndex Task index

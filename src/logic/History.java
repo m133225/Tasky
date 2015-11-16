@@ -22,7 +22,6 @@ public class History {
     boolean pushCommand(Command commandObject, boolean isForUndo) {
         if (isForUndo) {
             commandHistoryList.add(commandObject);
-            //commandUndoHistoryList.clear();
         } else {
             commandUndoHistoryList.add(commandObject);
         }

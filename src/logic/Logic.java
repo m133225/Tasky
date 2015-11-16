@@ -157,7 +157,6 @@ public class Logic {
     /*
      * Main program
      */
-    //@@author A0132760M
     public static void main(String[] args) {
         Logic logicObject = new Logic();
         logicObject.start();
@@ -500,12 +499,10 @@ public class Logic {
         }
     }
     
-    //@@author A0134155M
     void toggleHelpDisplay() {
         isHelpDisplayed ^= true;
     }
 
-    //@@author A0132760M
     /**
      * Concatenates the newAlias to the current property value associated with
      * the key propertyType in propObject
@@ -900,7 +897,6 @@ public class Logic {
         return historyStatus;
     }
 
-    //@@author A0134155M
     /**
      * Identifies special keywords in the argumentlist, and returns a
      * usable arraylist of index strings
@@ -945,7 +941,6 @@ public class Logic {
         }
     }
     
-    //@@author A0132760M
     /**
      * Update each of the clonedTask fields if the newTask fields
      * are not null, abiding to the restrictions of the task fields
@@ -1248,7 +1243,6 @@ public class Logic {
      * @param listOfFirstDate
      * @param listOfSecondDate
      */
-    //@@author A0124093M
     void getTasksInFirstAndSecondDate(
             ArrayList<Task> listOfEventsDeadlines,
             ArrayList<Task> listOfFirstDate, ArrayList<Task> listOfSecondDate) {
@@ -1304,7 +1298,6 @@ public class Logic {
      * 
      * @param searchStrings
      */
-    //@@author A0132760M
     void filterTasksAndGenerateSearchStrings(List<String> searchStrings) {
         boolean isEmptyName = true;
         boolean isEmptyTime = true;

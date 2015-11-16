@@ -12,28 +12,24 @@ public class Command {
         ADD, EDIT, DELETE, DISPLAY, EXIT, SAVETO, UNDO, REDO, MARK, UNMARK, SEARCH, HELP, ALIAS;
     }
     
-    //@@author A0124093M
     public Command(Type commandType) { 
         setCommandType(commandType);
         this.tasks = null;
         this.argumentList = null;
     }
     
-    //@@author A0124093M
     public Command(Type commandType, Task task) { 
         setCommandType(commandType);
         addTask(task);
         this.argumentList = null;
     }
     
-    //@@author A0124093M
     public Command(Type commandType, String[] args) { 
         setCommandType(commandType);
         setArguments(args);
         this.tasks = null;
     }
     
-    //@@author A0124093M
     public Command(Type commandType, String[] args, Task task) { 
         setCommandType(commandType);
         addTask(task);
@@ -47,17 +43,14 @@ public class Command {
     }
     
     // --------------- getter methods --------------------
-    //@@author A0124093M
     public Type getCommandType() {
         return commandType;
     }
     
-    //@@author A0124093M
     public ArrayList<Task> getTasks() {
         return tasks;
     }
     
-    //@@author A0124093M
     public Task getTask(int index) {
         if(tasks != null && tasks.size() > index) {
             return tasks.get(index);
@@ -67,23 +60,19 @@ public class Command {
         
     }
     
-    //@@author A0124093M
     public ArrayList<String> getArguments() {
         return argumentList;
     }
     
     // --------------- setter methods -------------------
-    //@@author A0124093M
     public void setCommandType(Type commandType) {
         this.commandType = commandType;
     }
     
-    //@@author A0124093M
     public void setTask(int index, Task task){
         this.tasks.set(index,task);
     }
     
-    //@@author A0124093M
     public void addTask(Task task) {
         if (this.tasks == null) {
             this.tasks = new ArrayList<Task>();

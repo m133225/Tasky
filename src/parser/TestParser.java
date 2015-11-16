@@ -17,17 +17,13 @@ import org.junit.Test;
 import storage.JsonFormatStorage;
 
 public class TestParser {
-
     Parser parserObj;
 
-    //@@author A0108355H
     @Before
     public void setup(){
             parserObj = new Parser();
     }
 
-
-    //@@author A0108355H
     //test add without a name
     @Test
     public void testParserAddEmptyName() {
@@ -42,7 +38,6 @@ public class TestParser {
     
     }
     
-    //@@author A0108355H
     //test delete without a index
     @Test
     public void testParserDeleteEmptyName() {
@@ -57,7 +52,6 @@ public class TestParser {
     
     }
     
-    //@@author A0108355H
     //test edit without argument
     @Test
     public void testParserEditEmptyName() {
@@ -72,7 +66,6 @@ public class TestParser {
     
     }
     
-    //@@author A0108355H
     //test edit on special fields
     @Test
     public void testParserEditSpecial() throws Exception {
@@ -84,20 +77,6 @@ public class TestParser {
     
     }
     
-    /*//@@author A0108355H
-    //test edit with a new task of full arguments
-    @Test
-    public void testParserEditNormal() throws Exception {
-        Command message;
-
-        message = parserObj.parseCommand("edit 1 task1 loc nus by next friday"); // needs to change, next friday's always changes x.x
-        String actual = "Name: task1 Starting time: null Ending Time: java.util.GregorianCalendar[time=?,areFieldsSet=false,areAllFieldsSet=false,lenient=true,zone=sun.util.calendar.ZoneInfo[id=\"Asia/Singapore\",offset=28800000,dstSavings=0,useDaylight=false,transitions=9,lastRule=null],firstDayOfWeek=1,minimalDaysInFirstWeek=1,ERA=?,YEAR=2015,MONTH=10,WEEK_OF_YEAR=?,WEEK_OF_MONTH=?,DAY_OF_MONTH=13,DAY_OF_YEAR=?,DAY_OF_WEEK=?,DAY_OF_WEEK_IN_MONTH=?,AM_PM=1,HOUR=11,HOUR_OF_DAY=?,MINUTE=59,SECOND=?,MILLISECOND=?,ZONE_OFFSET=?,DST_OFFSET=?] Location: nus Period Interval: null Period Repeats null";
-                assertEquals(actual, message.getTask(0).getAllInfo());
-        
-    
-    }*/
-    
-    //@@author A0108355H
     //test basic search
     @Test
     public void testParserSearch() throws Exception {
@@ -110,7 +89,6 @@ public class TestParser {
     
     }
     
-    //@@author A0108355H
     //test saveto
     @Test
     public void testParserSaveto() throws Exception {
@@ -120,8 +98,6 @@ public class TestParser {
         assertEquals(actual, message.getArguments().get(0));    
     }
     
-
-    //@@author A0108355H
     @Test
     public void testParserMark() throws Exception {
         Command message;
@@ -130,7 +106,6 @@ public class TestParser {
         assertEquals(actual, message.getArguments().get(0));    
     }
     
-    //@@author A0108355H
     @Test
     public void testParserUnMark() throws Exception {
         Command message;
@@ -139,7 +114,6 @@ public class TestParser {
         assertEquals(actual, message.getArguments().get(0));    
     }
     
-    //@@author A0108355H
     @Test
     public void testParserAdd() throws Exception {
         Command message;
@@ -149,7 +123,6 @@ public class TestParser {
         assertEquals(true,cmd.compareTo(message) );
     }
     
-    //@@author A0108355H
     @Test
     public void testParserDelete() throws Exception {
         Command message;
@@ -159,7 +132,6 @@ public class TestParser {
         assertEquals("DELETE",message.getCommandType().toString());
     }
     
-
     @Test
     public void testParseDate() throws Exception {
         Calendar expectedDate = new GregorianCalendar();

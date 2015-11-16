@@ -25,7 +25,6 @@ public class JsonFormatStorage implements Storage {
     
     private Gson gson;
 
-    //@@author A0134155M
     /**
      * Default constructor for JsonFormatStorage. Does not use pretty formatting for JSON.
      */
@@ -33,7 +32,6 @@ public class JsonFormatStorage implements Storage {
         gson = new GsonBuilder().serializeNulls().create();
     }
     
-    //@@author A0134155M
     /**
      * Alternative constructor for JsonFormatStorage with option whether to prettify the
      * JSON or not.
@@ -47,7 +45,6 @@ public class JsonFormatStorage implements Storage {
         }
     }
     
-    //@@author A0134155M
     /**
      * {@inheritDoc}
      * 
@@ -68,7 +65,6 @@ public class JsonFormatStorage implements Storage {
         return true;
     }
 
-    //@@author A0134155M
     private String convertToJsonFormat(ArrayList<Task> tasks) {
         Task[] tasksArray = new Task[tasks.size()];
         tasksArray = tasks.toArray(tasksArray);
@@ -78,7 +74,6 @@ public class JsonFormatStorage implements Storage {
         return jsonFormat;
     }
 
-    //@@author A0108355H
     /* (non-Javadoc)
      * @see storage.Storage#saveFileToPath(java.lang.String)
      */
@@ -124,7 +119,6 @@ public class JsonFormatStorage implements Storage {
         return isFilePathChanged;
     }
     
-    //@@author A0108355H
     //copy older saved file to newer saved file
     // @throw IOException
     private void copyFile(String newPath, String oldPath) throws IOException {
@@ -139,7 +133,6 @@ public class JsonFormatStorage implements Storage {
         fw.close();
     }
 
-    //@@author A0134155M
     /**
      * {@inheritDoc}
      * @throws IllegalStateException if the file does not contain a valid JSON.
@@ -167,7 +160,6 @@ public class JsonFormatStorage implements Storage {
         return result;
     }
     
-    //@@author A0108355H
     private String storeInfo(ArrayList<Task> list) {
         String loggerMsg = "";
         for (int i = 0; i < list.size(); i++) {

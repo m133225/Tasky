@@ -146,7 +146,6 @@ public class Parser {
         }
     }
     
-    //@@author A0132760M
     public Parser(){
         initialiseKeywordLists();
         addAllDefaultKeywords();
@@ -190,7 +189,6 @@ public class Parser {
      * @param command
      * @return commandObject to be executed, or null if invalid
      */
-    //@@author A0124093M
     public Command parseCommand(String commandString) throws Exception {
         commandString = commandString.trim();
         Command.Type commandType = identifyType(commandString);
@@ -248,7 +246,6 @@ public class Parser {
         return commandObject;
     }
     
-    //@@author A0132760M
     String[] getAliasArgument(String commandString) {
         return commandString.split(WHITE_SPACE_REGEX, 2);
     }
@@ -448,7 +445,6 @@ public class Parser {
      * @return
      * @throws Exception
      */
-    //@@A0108355H
     boolean extractLocation(String commandString, ArrayList<KeywordMarker> keywordMarkers, Task taskObject) throws Exception{
         String[] locationArguments = getArgumentsForField(commandString, keywordMarkers, FieldType.LOCATION);
         String location = "";
@@ -464,7 +460,6 @@ public class Parser {
         return false;
     }
 
-    //@@author A0124093M
     boolean extractDate(String commandString,
             ArrayList<KeywordMarker> keywordMarkers, Task taskObject, boolean isNewTask) throws Exception {
         // check deadline
@@ -528,7 +523,6 @@ public class Parser {
 
     // if time not specified, it will be parsed to 11:59 PM
     // TIME keyword in commandString must be capitalized
-    //@@author A0124093M
     Calendar parseTime(String[] dateArgumentsTemp, boolean isStart) throws Exception {
         logger.fine("parseTime: parsing time");
         int date, month, year, hour, minute, isAMorPM;
@@ -763,7 +757,6 @@ public class Parser {
         return helperDate;
     }
     
-    //@@author A0124093M
     private int extractDate(String dateArgument) throws Exception {
         int date = Integer.parseInt(dateArgument);
         if (date < 0 || date > 31){
@@ -772,7 +765,6 @@ public class Parser {
         return date;
     }
 
-    //@@author A0132760M
     private int extractMonth(String dateArgument)
             throws Exception {
         boolean integerMonth;
@@ -853,7 +845,6 @@ public class Parser {
      * Method created to search for TIME keywords. Can't use hasKeyword since 
      * the keyword is concatenated with the time itself, e.g. '6pm' instead of '6 pm'
      */
-    //@@author A0124093M
     boolean isTimeKeyword(String word, String[] keywords) {
         for (int n = 0; n < keywords.length; n++) {
             if (word.contains(keywords[n])) {
@@ -863,7 +854,6 @@ public class Parser {
         return false;
     }
     
-    //@@author A0132760M
     /**
      * Method to obtain arguments after a keyword and before the
      * next keyword

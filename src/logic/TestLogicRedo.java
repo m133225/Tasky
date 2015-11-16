@@ -15,7 +15,6 @@ public class TestLogicRedo {
     
 Logic logicObject;
 
-     //@@author A0108355H
     @Before
     public void setup(){
         logicObject = new Logic();
@@ -23,17 +22,12 @@ Logic logicObject;
         saveFile.delete();
     }
 
-    //@@author A0108355H
     @Test
     public void logicRedoEmpty(){
-
         String message = logicObject.redoCommand();        
         assertEquals("Error: No history found.", message);
-        
-
     }
     
-    //@@author A0108355H
     @Test
     public void logicRedoadd(){
         ArrayList<Task> newTasks = new ArrayList<Task>();
@@ -46,10 +40,8 @@ Logic logicObject;
         assertEquals("item 1", logicObject.listOfTasks.get(0).getName());
     }
 
-    //@@author A0108355H
     @Test
     public void logicRedoMultipleDelete(){
-
         logicObject.listOfTasks = new ArrayList<Task>();
         logicObject.listOfTasks.add(new Task("some item 1"));
         logicObject.listOfTasks.add(new Task("some item 2"));    
@@ -81,7 +73,6 @@ Logic logicObject;
 
     }
 
-    //@@author A0108355H
     @Test
     public void logicUndoEdit(){
         ArrayList<Task> listToEdit = new ArrayList<Task>();
@@ -103,8 +94,7 @@ Logic logicObject;
         assertEquals("some item 3", logicObject.listOfTasks.get(1).getName());
 
     }
-    
-    //@@author A0108355H
+
     @After
     public void cleanup(){
         File saveFile = new File("save.txt");

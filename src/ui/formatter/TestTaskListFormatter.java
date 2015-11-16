@@ -13,7 +13,6 @@ import org.junit.Test;
 
 import global.Task;
 
-//@@author A0134155M
 public class TestTaskListFormatter {
 
     private static final int ONE_BILLION = (int) 1e9;
