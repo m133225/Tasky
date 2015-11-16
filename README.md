@@ -1,20 +1,41 @@
 # Tasky
 
-## Credits
+# Contents
+1. [Credits](#1-credits)
+2. [Introduction](#2-introduction)
+3. [Installation](#3-installation)
+4. [User Guide](#4-user-guide)
+  - [Adding tasks](#adding-tasks)
+  - [Displaying tasks](#displaying-tasks)
+  - [Editing a task](#editing-a-task)
+  - [Deleting tasks](#deleting-tasks)
+  - [Marking tasks as completed](#marking-tasks-as-completed)
+  - [Marking tasks as incomplete](#marking-tasks-as-incomplete)
+  - [Undoing commands](#undoing-commands)
+  - [Redoing commands](#redoing-commands)
+  - [Searching for tasks](#searching-for-tasks)
+  - [Adding command aliases](#adding-command-aliases)
+  - [Changing path to data file](#changing-path-to-data-file)
+  - [Exiting Tasky](#exiting-tasky)
 
-1. The team members of my project group, [cs2103aug2015-w10-4j](https://github.com/cs2103aug2015-w10-4j), for the initialization of the Tasky project (up to [V0.5](https://github.com/cs2103aug2015-w10-4j/main))
+# 1. Credits
 
-## Introduction
+The team members of my project group, [cs2103aug2015-w10-4j](https://github.com/cs2103aug2015-w10-4j), for the initialization of the Tasky project (up to [V0.5](https://github.com/cs2103aug2015-w10-4j/main))
+
+# 2. Introduction
 Tasky is a _command-line_ calendar program that aims to accommodate busy users who are capable of typing quickly, such as students and office workers.
 
 This is an open source project.
 
-## Installation
+# 3. Installation
 Download the latest release at [Releases](https://github.com/m133225/Tasky/releases).
 
 Simply double click the .jar file to run Tasky!
 
-## Adding tasks (command: add)
+# 4. User Guide
+
+## Adding tasks
+(command: add)
 
 	add task123 by 11 sep 2015
 
@@ -59,14 +80,16 @@ You can also add tasks without a specific ordering of the different fields.
 
 will yield and add the exact same task.
 
-## Displaying tasks (command: display/clear)
+## Displaying tasks
+(command: display/clear)
 
 	display
 
 This command is to return to the default view.
 Note that this command also clears all existing search filters.
 
-## Editing a task (command: edit/change)
+## Editing a task
+(command: edit/change)
 
 	edit 1 task456 by 12 sep 2015
 
@@ -77,7 +100,8 @@ This is an example to edit the task number 1 from the [display](#displaying-task
 
 This is an example to edit the task number 1 from the [display](#displaying-tasks) to task456 and change the location to school
 
-## Deleting tasks (command: delete/del)
+## Deleting tasks
+(command: delete/del)
 
 	delete 1  
 
@@ -93,8 +117,22 @@ This is an example to remove the task that is currently from number one to numbe
 
 To get the list of tasks, you can issue a display command. This command will also delete the task in the storage file. It is possible to revert the command by issuing an undo command. For more info, please take a look at [display](#displaying-tasks) and [undo](#undoing-commands)
 
+## Marking tasks as completed
+(command: mark)
 
-## Undoing commands (command: undo)
+	mark 1
+
+This is an example to mark the task that is showing on the screen as number 1 on the screen as completed. To view tasks that have already been completed, key in "display done".
+
+## Marking tasks as incomplete
+(command: unmark)
+
+	unmark 1
+
+This is an example to mark the task that is showing on the screen as number 1 on the screen as incomplete. To view tasks that are still incomplete, key in "display undone".       
+
+## Undoing commands
+(command: undo)
 
 	undo
 
@@ -102,32 +140,15 @@ This is an example to undo the previous command. If there is no previous command
 
 Note that only add, edit, delete, mark and unmark commands are supported.
 
-## Redoing commands (command: redo)
+## Redoing commands
+(command: redo)
 
 	redo
 
 Pairing with undo, this command reinstates whatever undo has reverted previously. Note that redo can only be used immediately after a sequence of undo commands.
 
-## Changing path to the data file (command: saveto)
-
-	saveto new_file.txt
-
-This is an example to change the path to the save file to new_file.txt. After this command, any changes made will be saved to the new file.
-
-If there is already a file in the specified path, Tasky will load the data in it for you instead.
-
-## Marking tasks as completed  (command: mark)
-
-	mark 1
-
-This is an example to mark the task that is showing on the screen as number 1 on the screen as completed. To view tasks that have already been completed, key in "display done".
-
-## Marking tasks as incomplete  (command: unmark)
-
-	unmark 1
-
-This is an example to mark the task that is showing on the screen as number 1 on the screen as incomplete. To view tasks that are still incomplete, key in "display undone".       
-## Searching for tasks (command: search)
+## Searching for tasks
+(command: search)
 
 	search task
 
@@ -149,7 +170,8 @@ Will display tasks that are due today.
 
 Will display tasks that have the word "home" in their location.
 
-## Adding command aliases (command: alias)
+## Adding command aliases
+(command: alias)
 
 	alias add submit
 
@@ -159,7 +181,18 @@ This is an example to add the alias 'submit' for the 'add' command. If successfu
 
 will add a 'homework' task that is due on Sunday.
 
-## Exiting the program
-You can exit the program by issuing the command
+## Changing path to data file
+(command: saveto)
+
+	saveto new_file.txt
+
+This is an example to change the path to the save file to new_file.txt. After this command, any changes made will be saved to the new file.
+
+If there is already a file in the specified path, Tasky will load the data in it for you instead.
+
+## Exiting Tasky
+(command: exit)
+
+You can exit Tasky by issuing the command
 
 	exit

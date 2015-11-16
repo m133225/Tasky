@@ -1646,13 +1646,10 @@ public class Logic {
         assert (!(taskTwoStart == null));
         assert (!(taskTwoEnd == null));
 
-        if ((taskOneStart.before(taskTwoStart) && taskOneEnd
-                .before(taskTwoStart))
-                || (taskTwoStart.before(taskOneStart) && taskTwoEnd
-                        .before(taskOneStart))) {
-            return false;
-        } else {
+        if (taskOneEnd.after(taskTwoStart) && taskTwoEnd.after(taskOneStart)) {
             return true;
+        } else {
+            return false;
         }
     }
 
