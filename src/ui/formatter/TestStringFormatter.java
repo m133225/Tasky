@@ -17,15 +17,6 @@ public class TestStringFormatter {
         assertEquals("haha      ", result);
     }
 
-    /*
-     * Test for align left, fail.
-     */
-    @Test
-    public void testLeftFail() {
-        String result = StringFormatter.formatString("giraffe", StringFormatter.Alignment.ALIGN_LEFT,
-                5);
-        assertNull(result);
-    }
     
     /*
      * Test for align center, success. Space can be distributed evenly
@@ -51,16 +42,6 @@ public class TestStringFormatter {
     }
     
     /*
-     * Test for align center, fail.
-     */
-    @Test
-    public void testCenterFail() {
-        String result = StringFormatter.formatString("paper", StringFormatter.Alignment.ALIGN_CENTER,
-                4);
-        assertNull(result);
-    }
-    
-    /*
      * Test for align right, success.
      */
     @Test
@@ -68,16 +49,6 @@ public class TestStringFormatter {
         String result = StringFormatter.formatString("cable", StringFormatter.Alignment.ALIGN_RIGHT,
                 7);
         assertEquals(result, "  cable");
-    }
-    
-    /*
-     * Test for align right, fail.
-     */
-    @Test
-    public void testRightFail() {
-        String result = StringFormatter.formatString("object long long long long", StringFormatter.Alignment.ALIGN_RIGHT,
-                11);
-        assertNull(result);
     }
 
 }
