@@ -1,33 +1,26 @@
 # Tasky
 
-## Introduction
-Tasky is a _command-line_ calendar program that aims to accommodate busy users that are capable of typing quickly,
-such as students or office workers.
+## Credits
 
-This is an open source project for CS2103 module.
+1. The team members of my project group, [cs2103aug2015-w10-4j](https://github.com/cs2103aug2015-w10-4j), for the initialization of the Tasky project (up to [V0.5](https://github.com/cs2103aug2015-w10-4j/main))
+
+## Introduction
+Tasky is a _command-line_ calendar program that aims to accommodate busy users who are capable of typing quickly, such as students and office workers.
+
+This is an open source project.
 
 ## Installation
-To install Tasky, clone the repository using the following command:
-	
-	git clone git://github.com/cs2103aug2015-w10-4j/main.git
-	
-Then, enter the downloaded "main" folder, and type the following to compile the source code:
-	
-	javac -d bin -sourcepath src -cp gson-2.3.1.jar src/logic/Logic.java
-	
-Note that you only have to do this once for each Tasky update.
-	
-After compiling, execute the following command to launch Tasky!
+Download the latest release at [Releases](https://github.com/m133225/Tasky/releases).
 
-	java -cp bin logic.Logic
+Simply double click the .jar file to run Tasky!
 
-## Adding a task (command: add)
+## Adding tasks (command: add)
 
 	add task123 by 11 sep 2015
 
-This is an example to add a task using the *add* keyword with description "task123" and date 11 sep 2015. It is optional to specify the year of the task, i.e. the year will be defaulted to the current year if not indicated by the user (as shown below). 
+This is an example to add a task using the *add* keyword with description "task123" and date 11 sep 2015. It is optional to specify the year of the task, i.e. the year will be defaulted to the current year if not indicated by the user (as shown below).
 
-Note that the keyword to specify the end date field here is 'by'. We can also use the keyword pairs 'start... end' or 'from... to' to specify the starting and ending date-time for the event:
+Note that the keyword to specify the end date field here is 'by'. You can also use the keyword pairs 'start... end' or 'from... to' to specify the starting and ending date-time for the event:
 
 	add task 123 start 11 sep end 15 sep
 
@@ -36,8 +29,7 @@ Use of natural language date filters are also accepted:
 	add task 123 by next monday
 	add task 456 by tomorrow
 
-
-To specify a timing for the task, simply add a time arugment after the date arguments, for e.g.
+To specify a timing for the task, simply add a time argument after the date arguments, for example
 
 	add task 123 by today 8PM
 	add task 123 start 11 sep 9AM end 11 sep 2PM
@@ -46,50 +38,57 @@ This will also store the task to a text file, which could be retrieved later by 
 
 You can also omit the year which will then interpreted by the program as the current year, or you can omit the date entirely as well, to store the task without any date information.
 
-To spcficy a location for the task, simply add "loc" or "at" followed by the location, for e.g.
+To specify a location for the task, simply type "loc" or "at", followed by the location, for example
 
 	add task 123 by today 8PM loc nus
 	add task 123 start 11 sep 9AM end 11 sep 2PM loc my home
-	
-To add  periodic tasks, use every [index] day(s)/week(s)/month(s)/year(s) for [index]. for e.g
-       
-       add task from today to tomorrow every 2 days for 2
-       add task from today to tomorrow every 1 month for 5
-       
-noted that a starting time and a ending time is required when adding periodic task.   
-	
-Noted that we allowed adding task by eiher entering the location, time or periodic field first.
- 
+
+To add recurring tasks, use every [index] day(s)/week(s)/month(s)/year(s) for [index] times. For example
+
+  add task from today to tomorrow every 2 days for 2 times
+  add task from today to tomorrow every 1 month for 5 times
+
+Note that an ending time is always required when adding recurring tasks.
+
+### Reordering of fields
+
+You can also add tasks without a specific ordering of the different fields.
+
+	add meeting with client at office from tomorrow 2pm to tomorrow 5pm
+	add meeting with client to tomorrow 5pm at office from tomorrow 2pm
+
+will yield and add the exact same task.
+
 ## Displaying tasks (command: display/clear)
 
 	display
 
-This is an example to display all tasks currently stored in memory (and file). Tasky will then display a numbered list of tasks.
+This command is to return to the default view.
+Note that this command also clears all existing search filters.
 
 ## Editing a task (command: edit/change)
 
 	edit 1 task456 by 12 sep 2015
 
-This is an example to edit the task number 1 from the [display](#displaying-tasks) to task456 and change the date to 12 sep 2015
+This is an example to edit the task number 1 from the [display](#displaying-tasks) to task456 and change its date to 12 sep 2015
 
 
 	change 1 loc school
-	
-This is an example to edit the task number 1 from the [display](#displaying-tasks) to task456 and change the location to school	
 
-## Deleting a task (command: delete/del)
+This is an example to edit the task number 1 from the [display](#displaying-tasks) to task456 and change the location to school
+
+## Deleting tasks (command: delete/del)
 
 	delete 1  
 
-This is an example to remove the task that is currently number one in the list. 
+This is an example to remove the task that is currently number one in the list.
 
 	del 1 2 4 6
-	
-This is an example to remove the task that is currently number one, two, four, six in the list. 
 
+This is an example to remove the task that is currently number one, two, four, six in the list.
 
 	del 1-6
-	
+
 This is an example to remove the task that is currently from number one to number six in the list.
 
 To get the list of tasks, you can issue a display command. This command will also delete the task in the storage file. It is possible to revert the command by issuing an undo command. For more info, please take a look at [display](#displaying-tasks) and [undo](#undoing-commands)
@@ -99,56 +98,68 @@ To get the list of tasks, you can issue a display command. This command will als
 
 	undo
 
-This is an example to undo the previous command. If there is no previous command, Tasky will do nothing and give you a notification that you can not undo. All update operations done by Tasky are recorded inside the main memory of Tasky and would be wiped upon program termination. Therefore, you can only undo a command if you issued it in the same session.
+This is an example to undo the previous command. If there is no previous command, Tasky will do nothing but give you a notification that you cannot undo. All update operations done by Tasky are recorded inside the main memory of Tasky and would be wiped upon program termination. Therefore, you can only undo a command if you issued it in the same session.
 
-Note that only add, edit and delete commands are supported.
+Note that only add, edit, delete, mark and unmark commands are supported.
 
-## Changing save file path
+## Redoing commands (command: redo)
 
-	savepath new_file.txt
+	redo
+
+Pairing with undo, this command reinstates whatever undo has reverted previously. Note that redo can only be used immediately after a sequence of undo commands.
+
+## Changing path to the data file (command: saveto)
+
+	saveto new_file.txt
 
 This is an example to change the path to the save file to new_file.txt. After this command, any changes made will be saved to the new file.
 
-## mark task as completed  (command: mark)
+If there is already a file in the specified path, Tasky will load the data in it for you instead.
 
-       mark 1
-       
-This is an example to mark task 1 that is showing on the screen completed, to view that tasks that marked completed, key in " search done".       
+## Marking tasks as completed  (command: mark)
 
-## unmark task as completed  (command: unmark)
+	mark 1
 
-       unmark 1
-       
-This is an example to mark task 1 that is showing on the screen completed, to view that tasks that marked completed, key in " search done".       
+This is an example to mark the task that is showing on the screen as number 1 on the screen as completed. To view tasks that have already been completed, key in "display done".
 
-## search tasks (command: search/find)
+## Marking tasks as incomplete  (command: unmark)
 
-       search task
-       
+	unmark 1
+
+This is an example to mark the task that is showing on the screen as number 1 on the screen as incomplete. To view tasks that are still incomplete, key in "display undone".       
+## Searching for tasks (command: search)
+
+	search task
+
 This is an example to search any tasks that contain "task" in their name.
 
-Multiple keywords can also be specified for a more precise filter, for e.g.
+Consecutive searches can also be done to obtain a more specific filter. For example
 
-		search task
-		search 456
-		
-will only display tasks containing both keywords “task” and “456”.
-You can also filter the search by specific fields like date, loc etc.
+	search task
+	search 456
 
-		search by today
+will only display tasks containing both keywords "task" and "456".
+You can also filter the search by fields such as date or location.
+
+	search by today
 
 Will display tasks that are due today.
 
-		search loc home
+	search loc home
 
-Will display tasks that have the location “home”.
+Will display tasks that have the word "home" in their location.
 
+## Adding command aliases (command: alias)
 
+	alias add submit
+
+This is an example to add the alias 'submit' for the 'add' command. If successful, you will now be able to add new tasks using the 'submit' alias. For example
+
+	submit homework by sunday
+
+will add a 'homework' task that is due on Sunday.
 
 ## Exiting the program
 You can exit the program by issuing the command
 
 	exit
-	
-	
-
