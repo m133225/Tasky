@@ -530,7 +530,7 @@ public class Parser {
     // TIME keyword in commandString must be capitalized
     //@@author A0124093M
     Calendar parseTime(String[] dateArgumentsTemp, boolean isStart) throws Exception {
-        logger.fine("parseDate: parsing date");
+        logger.fine("parseTime: parsing time");
         int date, month, year, hour, minute, isAMorPM;
         if (isStart) {
             hour = DEFAULT_HOUR_FOR_START_TIME;
@@ -548,54 +548,53 @@ public class Parser {
         // start of parsing time
         // time argument in dateArguments is removed from array
         // new array is created since array length cannot be modified
+        logger.fine("parsing time component");
         String[] dateArguments;
-        if (hasTimeKeyword(dateArgumentsTemp, TIME)) {
-            dateArguments = new String[dateArgumentsTemp.length - 1];
-            for (int i = 0; i < dateArgumentsTemp.length; i++) {
-                boolean keywordFound = false;
-                for (int n = 0; n < TIME.length; n++) {
-                    // low-level check if TIME keywords is present at the end of the argument e.g. 6(pm)
-                    if (dateArgumentsTemp[i].endsWith(TIME[n])) {
-                        keywordFound = true;
-                        try {
-                            String tempTime = dateArgumentsTemp[i];
-                            tempTime = tempTime.replace(TIME[n], "");
-                            if (n == 0) {    // h: 24 hour time format
-                                hourOfDay = Integer.parseInt(tempTime.substring(0, 2));
-                                minute = Integer.parseInt(tempTime.substring(2));
-
-                            } else {    // am/pm: 12 hour time format
-                                isAMorPM = (n == 1 || n == 3) ? 0 : 1;
-                                if (tempTime.contains(TIME_SEPARATOR)) { // check if minutes is specified
-                                    String[] tempTimeSplit = tempTime.split("\\" + TIME_SEPARATOR);
-                                    minute = Integer.parseInt(tempTimeSplit[1]);
-                                    hour = Integer.parseInt(tempTimeSplit[0]);
-                                } else {
-                                    // if no minutes is specified, then set to 0 (e.g. '8PM' = 8:00PM)
-                                    minute = 0;
-                                    hour = Integer.parseInt(tempTime);
-                                }
-                                // for 12 hour time format, 12am/pm means hour = 0
-                                hour = hour == 12 ? 0 : hour;
-                            }
-                            // although Calendar can parse beyond this range, it will be
-                            // misleading for the user. so throw exception
-                        } catch (ArrayIndexOutOfBoundsException|NumberFormatException e) {
-                            throw new Exception(ERROR_INVALID_TIME_FORMAT);
-                        } catch (Exception e) {
-                            throw new Exception(ERROR_INVALID_TIME_FORMAT);
-                        }
-                    }
-                }
-                if (!keywordFound) {
-                    dateArguments[i] = dateArgumentsTemp[i];
-                }            
+        String timeArgument = dateArgumentsTemp[dateArgumentsTemp.length - 1];
+		if (isTimeKeyword(timeArgument, TIME)) {
+		    for (int n = 0; n < TIME.length; n++) {
+				if (timeArgument.endsWith(TIME[n])) {
+					try {
+						timeArgument = timeArgument.replace(TIME[n], "");
+						if (n == 0) { // h: 24 hour time format
+							hourOfDay = Integer.parseInt(timeArgument.substring(0, 2));
+							minute = Integer.parseInt(timeArgument.substring(2));
+						} else { // am/pm: 12 hour time format
+							isAMorPM = (n == 1 || n == 3) ? 0 : 1;
+							if (timeArgument.contains(TIME_SEPARATOR)) { // check if
+																		// minutes
+																		// is
+																		// specified
+								String[] tempTimeSplit = timeArgument.split("\\" + TIME_SEPARATOR);
+								minute = Integer.parseInt(tempTimeSplit[1]);
+								hour = Integer.parseInt(tempTimeSplit[0]);
+							} else {
+								// if no minutes is specified, then set to 0
+								// (e.g. '8PM' = 8:00PM)
+								minute = 0;
+								hour = Integer.parseInt(timeArgument);
+							}
+							// for 12 hour time format, 12am/pm means hour = 0
+							hour = hour == 12 ? 0 : hour;
+						}
+					} catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
+						throw new Exception(ERROR_INVALID_TIME_FORMAT);
+					} catch (Exception e) {
+						throw new Exception(ERROR_INVALID_TIME_FORMAT);
+					}
+				}
+			}
+		    
+		    dateArguments = new String[dateArgumentsTemp.length - 1];
+            for (int i = 0; i < dateArgumentsTemp.length - 1; i++) {
+                dateArguments[i] = dateArgumentsTemp[i];
             }
         } else {
             dateArguments = dateArgumentsTemp;
         }
         
         // start parsing of date
+        logger.fine("parsing date component");
         if (dateArguments.length == 0) {
             throw new Exception(ERROR_INVALID_NUMBER_OF_ARGUMENTS);
         } else if(!hasKeyword(dateArguments, DATE_SPECIAL)
@@ -855,12 +854,10 @@ public class Parser {
      * the keyword is concatenated with the time itself, e.g. '6pm' instead of '6 pm'
      */
     //@@author A0124093M
-    boolean hasTimeKeyword(String[] words, String[] keywords) {
-        for (int i = 0; i < words.length; i++) {
-            for (int n = 0; n < keywords.length; n++) {
-                if (words[i].contains(keywords[n])) {
-                    return true;
-                }
+    boolean isTimeKeyword(String word, String[] keywords) {
+        for (int n = 0; n < keywords.length; n++) {
+            if (word.contains(keywords[n])) {
+                return true;
             }
         }
         return false;
