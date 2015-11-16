@@ -7,12 +7,16 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import ui.formatter.FormatterHelper;
 import ui.tasktable.TaskTableModel;
@@ -36,7 +40,7 @@ public class TaskTable extends JTable {
     private static final String HEADER_FONT_NAME = "SansSerif";
     private static final int HEADER_FONT_STYLE = Font.BOLD;
     private static final int HEADER_FONT_SIZE = 12;
-    
+    private static final int[] MAX_WIDTH = {30, 358, 150, 150, 150, 0};
     private static final int[] COLUMN_ALIGNMENTS = { SwingConstants.LEFT,
             SwingConstants.LEFT,
             SwingConstants.CENTER,
@@ -48,6 +52,23 @@ public class TaskTable extends JTable {
     private static final boolean[] SET_MAX_WIDTH = {true, false, false, false, false, false};
     
     private TaskTableModel model = null;
+    
+    class TaskTableCellRenderer extends JTextPane implements TableCellRenderer {
+        int alignment = StyleConstants.ALIGN_CENTER;
+
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
+                int row, int column) {
+
+            this.setText(value.toString());
+            StyledDocument fieldData = this.getStyledDocument();
+            SimpleAttributeSet center = new SimpleAttributeSet();
+            StyleConstants.setAlignment(center, alignment);
+            fieldData.setParagraphAttributes(0, fieldData.getLength(), center, false);
+            this.setDocument(fieldData);
+
+            return this;
+        }
+    }
     
     public TaskTable(TaskTableModel dm) {
         super(dm);
@@ -77,8 +98,8 @@ public class TaskTable extends JTable {
         prepareTableHeader();
         prepareTableAlignment();
         prepareTableGrid();
-        
-        //fixColumnHeight();
+
+        fixColumnHeight();
         fixColumnWidth();
     }
     
@@ -92,13 +113,36 @@ public class TaskTable extends JTable {
         }
     }
     
-    private void setColumnWidth(int columnIndex, int columnWidth) {
-        //columnWidth = 300;
-        TableColumn tableColumn = getColumnModel().getColumn(columnIndex);
-        tableColumn.setPreferredWidth(columnWidth);
-        if (SET_MAX_WIDTH[columnIndex]) {
-            tableColumn.setMaxWidth(columnWidth);
+    private void fixColumnHeight() {
+        int totalRows = this.getRowCount();
+        int totalCols = this.getColumnCount();
+        int defaultRowHeight = this.getRowHeight();
+        System.out.println("Default row height is " + defaultRowHeight);
+        for (int i = 0; i < totalRows; i++) {
+            for (int j = 0; j < totalCols; j++) {
+                TableCellRenderer tableCellRenderer = getCellRenderer(i, j);
+                Component component = prepareRenderer(tableCellRenderer, i, j);
+                int cellPreferredWidth = component.getPreferredSize().width + getIntercellSpacing().width;
+                int curWidth = MAX_WIDTH[j];
+               // System.out.println("Preferred width is " + cellPreferredWidth);
+               // System.out.println("Current width is " + curWidth);
+                int minHeight = (int) Math.ceil((double) cellPreferredWidth / curWidth) * defaultRowHeight;
+                int rowHeight = (int) Math.max(minHeight, this.getRowHeight(i));
+                System.out.println("Current row ["+i+"] height is " + this.getRowHeight(i));
+                System.out.println("Setting row height to: " + rowHeight);
+                this.setRowHeight(i, rowHeight);
+                System.out.println("Getting row height...: " + this.getRowHeight());
+            }
         }
+    }
+    
+    private void setColumnWidth(int columnIndex, int columnWidth) {
+        TableColumn tableColumn = getColumnModel().getColumn(columnIndex);
+        tableColumn.setPreferredWidth(MAX_WIDTH[columnIndex]);
+        tableColumn.setMaxWidth(MAX_WIDTH[columnIndex]);
+
+        //TaskTableCellRenderer renderer = new TaskTableCellRenderer();
+        //tableColumn.setCellRenderer(renderer);
     }
     
     private int getColumnWidth(int columnIndex) {
@@ -131,7 +175,6 @@ public class TaskTable extends JTable {
         if (renderer == null) {
             renderer = getTableHeader().getDefaultRenderer();
         }
-        
         Component component = renderer.getTableCellRendererComponent(this,
                 tableColumn.getHeaderValue(), false, false, -1, columnIndex);
         
@@ -162,9 +205,7 @@ public class TaskTable extends JTable {
         for (int i = 0; i < columnCount; i++) {
             TableColumn currentTableColumn = tableColumnModel.getColumn(i);
             
-            DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-            renderer.setHorizontalAlignment(COLUMN_ALIGNMENTS[i]);
-            
+            TaskTableCellRenderer renderer = new TaskTableCellRenderer();
             currentTableColumn.setCellRenderer(renderer);
         }
     }
