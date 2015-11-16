@@ -117,21 +117,15 @@ public class TaskTable extends JTable {
         int totalRows = this.getRowCount();
         int totalCols = this.getColumnCount();
         int defaultRowHeight = this.getRowHeight();
-        System.out.println("Default row height is " + defaultRowHeight);
         for (int i = 0; i < totalRows; i++) {
             for (int j = 0; j < totalCols; j++) {
                 TableCellRenderer tableCellRenderer = getCellRenderer(i, j);
                 Component component = prepareRenderer(tableCellRenderer, i, j);
                 int cellPreferredWidth = component.getPreferredSize().width + getIntercellSpacing().width;
                 int curWidth = MAX_WIDTH[j];
-               // System.out.println("Preferred width is " + cellPreferredWidth);
-               // System.out.println("Current width is " + curWidth);
                 int minHeight = (int) Math.ceil((double) cellPreferredWidth / curWidth) * defaultRowHeight;
                 int rowHeight = (int) Math.max(minHeight, this.getRowHeight(i));
-                System.out.println("Current row ["+i+"] height is " + this.getRowHeight(i));
-                System.out.println("Setting row height to: " + rowHeight);
                 this.setRowHeight(i, rowHeight);
-                System.out.println("Getting row height...: " + this.getRowHeight());
             }
         }
     }
