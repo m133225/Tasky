@@ -54,8 +54,7 @@ public class GraphicalUI implements UI {
      * where :
      *  > displayArea occupies cell 1-3
      *  > statusBar occupies cell 4-6
-     *  > promptLabel occupies cell 7
-     *  > userInputField occupies cell 8-9
+     *  > userInputField occupies cell 7-9
      */
     
     /*
@@ -66,22 +65,16 @@ public class GraphicalUI implements UI {
     private static final int DEFAULT_WIDTH = 850;
     private static final int DEFAULT_HEIGHT = 480;
     private static final int USER_INPUT_FIELD_CHAR_COUNT = 50;
-    private static final int PROMPT_LABEL_CHAR_COUNT = 10;
     
     private static final int DISPLAY_AREA_POS_Y = 0;
     private static final int DISPLAY_AREA_POS_X = 0;
     private static final int DISPLAY_AREA_LEN_Y = 1;
     private static final int DISPLAY_AREA_LEN_X = 3;
     
-    private static final int PROMPT_LABEL_POS_Y = 2;
-    private static final int PROMPT_LABEL_POS_X = 0;
-    private static final int PROMPT_LABEL_LEN_Y = 1;
-    private static final int PROMPT_LABEL_LEN_X = 1;
-    
     private static final int USER_INPUT_FIELD_POS_Y = 2;
-    private static final int USER_INPUT_FIELD_POS_X = 1;
+    private static final int USER_INPUT_FIELD_POS_X = 0;
     private static final int USER_INPUT_FIELD_LEN_Y = 1;
-    private static final int USER_INPUT_FIELD_LEN_X = 2;
+    private static final int USER_INPUT_FIELD_LEN_X = 3;
     
     private static final int STATUS_BAR_POS_Y = 1;
     private static final int STATUS_BAR_POS_X = 0;
@@ -108,7 +101,6 @@ public class GraphicalUI implements UI {
     private JFrame frame = new JFrame(FRAME_TITLE);
     private JPanel displayAreaPanel = new JPanel();
     private JScrollPane displayAreaScrollPane = new JScrollPane(displayAreaPanel);
-    private JLabel promptLabel = new JLabel(DEFAULT_PROMPT, PROMPT_LABEL_CHAR_COUNT);
     private JTextField userInputField = new JTextField(USER_INPUT_FIELD_CHAR_COUNT);
     private StatusBar statusBar = new StatusBar();
     
@@ -127,7 +119,6 @@ public class GraphicalUI implements UI {
     
     private void addComponentsToPane(Container contentPane) {
         addDisplayAreaScrollPane(contentPane);
-        addPromptLabel(contentPane);
         addUserInputField(contentPane);
         addStatusBar(contentPane);
     }
@@ -166,23 +157,6 @@ public class GraphicalUI implements UI {
         contentPane.add(userInputField, constraint);
     }
 
-    private void addPromptLabel(Container contentPane) {
-        GridBagConstraints constraint = new GridBagConstraints();
-        
-        constraint.fill = GridBagConstraints.HORIZONTAL;
-        constraint.gridx = PROMPT_LABEL_POS_X;
-        constraint.gridy = PROMPT_LABEL_POS_Y;
-        constraint.gridheight = PROMPT_LABEL_LEN_Y;
-        constraint.gridwidth = PROMPT_LABEL_LEN_X;
-        
-        logger.log(Level.CONFIG, String.format("%s: fill = %s, gridx = %d, gridy = %d, "
-                + "gridheight = %d, gridwidth = %d", "PROMPT_LABEL", "GridBagConstraints.HORIZONTAL",
-                PROMPT_LABEL_POS_X, PROMPT_LABEL_POS_Y, PROMPT_LABEL_LEN_Y, PROMPT_LABEL_LEN_X));
-        promptLabel.setForeground(THEME_COLOR);
-        
-        contentPane.add(promptLabel, constraint);
-    }
-
     private void addDisplayAreaScrollPane(Container contentPane) {
         GridBagConstraints constraint = new GridBagConstraints();
         constraint.fill = GridBagConstraints.BOTH;
@@ -212,11 +186,6 @@ public class GraphicalUI implements UI {
         prepareUserInput();
         prepareDisplayAreaPanel();
         prepareDisplayAreaScrollPane();
-        preparePromptLabel();
-    }
-    
-    private void preparePromptLabel() {
-        promptLabel.setHorizontalAlignment(SwingConstants.CENTER);
     }
 
     private void prepareDisplayAreaScrollPane() {
@@ -300,6 +269,7 @@ public class GraphicalUI implements UI {
                 redrawDisplayAreaPanel();
             }
         };
+        
         userInputField.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), 
                 toggleHeaderVisibility);
         
@@ -394,7 +364,8 @@ public class GraphicalUI implements UI {
     }
 
     private void prepareComponentForUserInput(String prompt) {
-        promptLabel.setText(prompt);
+        // promptLabel.setText(prompt); 
+        // TODO: set to prompt when empty
         userInputField.setEditable(true);
         userInputField.grabFocus();
     }
