@@ -2,16 +2,20 @@ package ui;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Insets;
 
 import javax.swing.JLabel;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.SwingConstants;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
@@ -44,31 +48,6 @@ public class TaskTable extends JTable {
     
     private TaskTableModel model = null;
     
-    class TaskTableCellRenderer extends JTextPane implements TableCellRenderer {
-        int alignment;
-        
-        TaskTableCellRenderer() {
-            alignment = StyleConstants.ALIGN_CENTER;
-        }
-        
-        TaskTableCellRenderer(int alignmentConstant) {
-            alignment = alignmentConstant;
-        }
-
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus,
-                int row, int column) {
-            this.setText(value.toString());
-            StyledDocument fieldData = this.getStyledDocument();
-            SimpleAttributeSet attributes = new SimpleAttributeSet();
-            StyleConstants.setAlignment(attributes, alignment);
-            
-            fieldData.setParagraphAttributes(0, fieldData.getLength(), attributes, false);
-            this.setDocument(fieldData);
-
-            return this;
-        }
-    }
-    
     public TaskTable(TaskTableModel dm) {
         super(dm);
         setBorder(new LineBorder(Color.LIGHT_GRAY));
@@ -93,7 +72,6 @@ public class TaskTable extends JTable {
     
     private void prepareTable() {
         prepareTableRenderer();
-        prepareTableHeader();
         prepareTableGrid();
 
         fixColumnHeight();
@@ -118,9 +96,9 @@ public class TaskTable extends JTable {
             for (int j = 0; j < totalCols; j++) {
                 TableCellRenderer tableCellRenderer = getCellRenderer(i, j);
                 Component component = prepareRenderer(tableCellRenderer, i, j);
-                int cellPreferredWidth = component.getPreferredSize().width + getIntercellSpacing().width;
+                int cellPreferredWidth = component.getPreferredSize().width;
                 int curWidth = MAX_WIDTH[j];
-                int minHeight = (int) Math.ceil((double) cellPreferredWidth / curWidth) * defaultRowHeight;
+                int minHeight = (int) (Math.ceil((double) cellPreferredWidth / curWidth)) * defaultRowHeight;
                 int rowHeight = (int) Math.max(minHeight, this.getRowHeight(i));
                 this.setRowHeight(i, rowHeight);
             }
@@ -149,7 +127,7 @@ public class TaskTable extends JTable {
             TableCellRenderer tableCellRenderer = getCellRenderer(i, columnIndex);
             Component component = prepareRenderer(tableCellRenderer, i, columnIndex);
             
-            int cellPreferredWidth = component.getPreferredSize().width + getIntercellSpacing().width;
+            int cellPreferredWidth = component.getPreferredSize().width;
             
             maxContentWidth = Math.max(maxContentWidth, cellPreferredWidth);
         }
@@ -169,24 +147,17 @@ public class TaskTable extends JTable {
         return component.getPreferredSize().width;
     }
     
-    private void prepareTableHeader() {
-        JTableHeader tableHeader = getTableHeader();
-        tableHeader.setFont(new Font(HEADER_FONT_NAME, HEADER_FONT_STYLE, HEADER_FONT_SIZE));
-        tableHeader.setBackground(HEADER_COLOR);
-        tableHeader.setForeground(Color.WHITE);    
-    }
-    
     private void prepareTableGrid() {
         setShowGrid(true);
         setGridColor(Color.LIGHT_GRAY);
     }
     
     private void prepareTableRenderer() {
-        prepareHeaderAlignment();
-        prepareContentAlignment();
+        prepareHeaderRenderer();
+        prepareContentRenderer();
     }
     
-    private void prepareContentAlignment() {
+    private void prepareContentRenderer() {
         TableColumnModel tableColumnModel = getColumnModel();
         int columnCount = tableColumnModel.getColumnCount();
         
@@ -198,10 +169,14 @@ public class TaskTable extends JTable {
         }
     }
     
-    private void prepareHeaderAlignment() {
-        TableCellRenderer headerRenderer = tableHeader.getDefaultRenderer();
-        JLabel headerLabel = (JLabel) headerRenderer;
-        headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
+    private void prepareHeaderRenderer() {
+    	TableCellRenderer headerRenderer = new TaskTableCellRenderer();
+    	tableHeader.setDefaultRenderer(headerRenderer);
+
+    	JTextPane headerPane = (JTextPane) headerRenderer;
+    	headerPane.setFont(new Font(HEADER_FONT_NAME, HEADER_FONT_STYLE, HEADER_FONT_SIZE));
+        headerPane.setBackground(HEADER_COLOR);
+        headerPane.setForeground(Color.WHITE); 
     }
     
     @Override

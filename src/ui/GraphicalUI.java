@@ -402,7 +402,6 @@ public class GraphicalUI implements UI {
         VerticalLayout displayAreaPanelLayout = (VerticalLayout) displayAreaPanel.getLayout();
         displayAreaPanelLayout.resetLayout();
     
-    
         for (String filter : filters) {
             JLabel label = new JLabel(filter);
             displayAreaPanel.add(label);
@@ -427,7 +426,6 @@ public class GraphicalUI implements UI {
     
     
     private boolean showToUserDefaultTable(TaskTableModel[] tableModels, List<String> titles) {
-
         assert tableModels.length <= titles.size();
         displayAreaPanel.removeAll();
 
@@ -486,7 +484,6 @@ public class GraphicalUI implements UI {
 
     @Override
     public boolean showTasks(List<Task> tasks, DisplayType displayType, List<String> titles) {
-
         int minTable = -1;
         int minRowCountPerTable = -1;
         if (displayType == DisplayType.DEFAULT) {
