@@ -19,17 +19,13 @@ public class History {
         commandUndoHistoryList.clear();
         return true;
     }
+    
     boolean pushCommand(Command commandObject, boolean isForUndo) {
         if (isForUndo) {
             commandHistoryList.add(commandObject);
         } else {
             commandUndoHistoryList.add(commandObject);
         }
-        return true;
-    }
-    
-    boolean pushUndoCommand(Command commandObject) {
-        commandHistoryList.add(commandObject);
         return true;
     }
     

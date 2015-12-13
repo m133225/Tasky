@@ -398,10 +398,9 @@ public class Logic {
             switch (commandType) {
                 case ADD :
                     logger.info("ADD command detected");
-                    //argumentList = removeDuplicates(argumentList);
-                    //indexList = parseIntList(argumentList);
                     Command addCommand = new CommandAdd(listOfTasks, userTask);
                     historyObject.pushCommand(addCommand, true);
+                    historyObject.clearUndoHistoryList();
                     return addCommand.execute();
                 case DELETE :
                     indexList = parseIntList(argumentList);
@@ -412,6 +411,7 @@ public class Logic {
                     	return e.getMessage();
                     }
                     historyObject.pushCommand(deleteCommand, true);
+                    historyObject.clearUndoHistoryList();
                     return deleteCommand.execute();
                 case EDIT :
                     logger.info("EDIT command detected");
@@ -427,10 +427,16 @@ public class Logic {
                     if (previousCommand == null) {
                         return ERROR_NO_HISTORY;
                     }
+                    historyObject.pushCommand(previousCommand, false);
                     return previousCommand.undo();
                 case REDO :
                     logger.info("REDO command detected");
-                    return "";//redoCommand();
+                    Command previousUndoCommand = historyObject.getPreviousCommand(false);
+                    if (previousUndoCommand == null) {
+                        return ERROR_NO_HISTORY;
+                    }
+                    historyObject.pushCommand(previousUndoCommand, true);
+                    return previousUndoCommand.execute();
                 case SAVETO :
                     logger.info("SAVETO command detected");
                     return "";//saveFilePath(argumentList);
