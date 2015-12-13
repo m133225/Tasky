@@ -47,6 +47,9 @@ public class CommandEdit extends Command {
                     Calendar finalStartingTime = (userTask.hasStartingTime()) ? userTask.getStartingTime() : curOccurrence.getStartingTime();
                     Calendar finalEndingTime = (userTask.hasEndingTime()) ? userTask.getEndingTime() : curOccurrence.getEndingTime();
                     TaskOccurrence newTaskOcc = new TaskOccurrence(finalName, finalStartingTime, finalEndingTime, finalLocation);
+                    if (curOccurrence.isDone()) {
+                        newTaskOcc.setDone(true);
+                    }
                     curAbstractTask.getTaskOccurrences().add(k, newTaskOcc);
                     foundTask = true;
                     

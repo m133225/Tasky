@@ -452,10 +452,26 @@ public class Logic {
                     return exitProgram();
                 case MARK:
                     logger.info("MARK command detected");
-                    return "";//markDoneStatus(indexList, isUserInput, isUndoHistory, true);
+                    indexList = parseIntList(argumentList);
+                    Command markCommand;
+                    try {
+                        markCommand = new CommandMark(listOfTasks, listOfShownTasks, indexList, true);
+                    } catch (Exception e) {
+                        return e.getMessage();
+                    }
+                    historyObject.pushCommand(markCommand, true);
+                    return markCommand.execute();
                 case UNMARK:
                     logger.info("UNMARK command detected");
-                    return "";//markDoneStatus(indexList, isUserInput, isUndoHistory, false);
+                    indexList = parseIntList(argumentList);
+                    Command unmarkCommand;
+                    try {
+                        unmarkCommand = new CommandMark(listOfTasks, listOfShownTasks, indexList, false);
+                    } catch (Exception e) {
+                        return e.getMessage();
+                    }
+                    historyObject.pushCommand(unmarkCommand, true);
+                    return unmarkCommand.execute();
                 case SEARCH:
                     logger.info("SEARCH command detected");
                     return "";//addSearchFilter(userTasks);

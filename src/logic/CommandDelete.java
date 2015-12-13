@@ -10,9 +10,9 @@ public class CommandDelete extends Command {
 	ArrayList<Task> listOfShownTasks = null;
 	ArrayList<TaskAbstraction> listOfTasks = null;
 	
-	TaskAbstraction deletedAbsTask = null;
-	TaskOccurrence deletedTaskOcc = null;
-	Integer indexToAddBack = null;
+	ArrayList<TaskAbstraction> deletedAbsTasks = null;
+	ArrayList<TaskOccurrence> deletedTaskOccs = null;
+	ArrayList<Integer> indexesToAddBack = null;
 	
     CommandDelete(ArrayList<TaskAbstraction> listOfTasks, ArrayList<Task> listOfShownTasks,
             ArrayList<Integer> indexesToDelete) throws Exception {
@@ -28,8 +28,10 @@ public class CommandDelete extends Command {
         this.listOfTasks = listOfTasks;
     }
 	
-	@Override
 	String execute() {
+	    deletedAbsTasks = new ArrayList<TaskAbstraction>();
+	    deletedTaskOccs = new ArrayList<TaskOccurrence>();
+	    indexesToAddBack = new ArrayList<Integer>();
 		for (int i = indexesToDelete.size() - 1; i >= 0; i--) {
 			int curIndex = indexesToDelete.get(i);
 			Task taskToDelete = listOfShownTasks.get(curIndex - 1);
@@ -45,12 +47,13 @@ public class CommandDelete extends Command {
 					if (taskToDelete.compareTo(curTask) == 0) {
 						if(curAbstractTask.getTaskOccurrencesSize() == 1){
 							listOfTasks.remove(curAbstractTask);
-							deletedAbsTask = curAbstractTask;
-							indexToAddBack = j;
+							deletedAbsTasks.add(curAbstractTask);
+							deletedTaskOccs.add(null);
+							indexesToAddBack.add(j);
 						} else {
-							deletedAbsTask = curAbstractTask;
-							deletedTaskOcc = curAbstractTask.removeTaskOccurrence(k);
-							indexToAddBack = k;
+							deletedAbsTasks.add(curAbstractTask);
+							deletedTaskOccs.add(curAbstractTask.removeTaskOccurrence(k));
+							indexesToAddBack.add(k);
 						}
 						foundTask = true;
 					}
@@ -64,12 +67,14 @@ public class CommandDelete extends Command {
 
 	@Override
 	String undo() {
-		if (deletedTaskOcc == null){
-			listOfTasks.add(indexToAddBack, deletedAbsTask);
-		} else {
-			deletedAbsTask.addTaskOccurrence(indexToAddBack, deletedTaskOcc);
-		}
-		return "Undo: Item added back.";
+        for (int i = deletedAbsTasks.size() - 1; i >= 0; i--) {
+            if (deletedTaskOccs.get(i) == null) {
+                listOfTasks.add(indexesToAddBack.get(i), deletedAbsTasks.get(i));
+            } else {
+                deletedAbsTasks.get(i).addTaskOccurrence(indexesToAddBack.get(i), deletedTaskOccs.get(i));
+            }
+        }
+		return "Undo: Item(s) added back.";
 	}
 
 	boolean isUndoable(){

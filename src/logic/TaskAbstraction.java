@@ -60,6 +60,10 @@ public class TaskAbstraction extends Task {
     	return this.taskOccurrences;
     }
     
+    public TaskOccurrence getTaskOccurrence(int index){
+        return this.taskOccurrences.get(index);
+    }
+    
     public int getTaskOccurrencesSize(){
     	return this.taskOccurrences.size();
     }
@@ -110,7 +114,9 @@ public class TaskAbstraction extends Task {
             finalEndingTime = this.getEndingTime();
         }
 
-        return new Task(finalName, finalStartingTime, finalEndingTime, finalLocation);
+        Task newTask = new Task(finalName, finalStartingTime, finalEndingTime, finalLocation);
+        newTask.setDone(curOccurrence.isDone());
+        return newTask;
     }
     
     public ArrayList<Task> resolveAll() {
