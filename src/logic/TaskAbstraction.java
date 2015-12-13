@@ -81,39 +81,43 @@ public class TaskAbstraction extends Task {
     public TaskOccurrence removeTaskOccurrence(int index){
     	return this.taskOccurrences.remove(index);
     }
-    public Task resolve(int index){
-		if (index == 0) {
-			return new Task(this.getName(), this.getStartingTime(),
-					this.getEndingTime(), this.getLocation());
-		} else {
-			TaskOccurrence curOccurrence = taskOccurrences.get(index);
-			String finalName = null;
-			String finalLocation = null;
-			Calendar finalStartingTime = null;
-			Calendar finalEndingTime = null;
 
-			if (curOccurrence.hasName()) {
-				finalName = curOccurrence.getName();
-			} else {
-				finalName = this.getName();
-			}
-			if (curOccurrence.hasLocation()) {
-				finalLocation = curOccurrence.getLocation();
-			} else {
-				finalLocation = this.getLocation();
-			}
-			if (curOccurrence.hasStartingTime()) {
-				finalStartingTime = curOccurrence.getStartingTime();
-			} else {
-				finalStartingTime = this.getStartingTime();
-			}
-			if (curOccurrence.hasEndingTime()) {
-				finalEndingTime = curOccurrence.getEndingTime();
-			} else {
-				finalEndingTime = this.getEndingTime();
-			}
-			
-			return new Task(finalName, finalStartingTime, finalEndingTime, finalLocation);
-		}
+    public Task resolve(int index) {
+        TaskOccurrence curOccurrence = taskOccurrences.get(index);
+        String finalName = null;
+        String finalLocation = null;
+        Calendar finalStartingTime = null;
+        Calendar finalEndingTime = null;
+
+        if (curOccurrence.hasName()) {
+            finalName = curOccurrence.getName();
+        } else {
+            finalName = this.getName();
+        }
+        if (curOccurrence.hasLocation()) {
+            finalLocation = curOccurrence.getLocation();
+        } else {
+            finalLocation = this.getLocation();
+        }
+        if (curOccurrence.hasStartingTime()) {
+            finalStartingTime = curOccurrence.getStartingTime();
+        } else {
+            finalStartingTime = this.getStartingTime();
+        }
+        if (curOccurrence.hasEndingTime()) {
+            finalEndingTime = curOccurrence.getEndingTime();
+        } else {
+            finalEndingTime = this.getEndingTime();
+        }
+
+        return new Task(finalName, finalStartingTime, finalEndingTime, finalLocation);
+    }
+    
+    public ArrayList<Task> resolveAll() {
+        ArrayList<Task> resolvedTasks = new ArrayList<Task>();
+        for (int i = 0; i < taskOccurrences.size(); i++) {
+            resolvedTasks.add(resolve(i));
+        }
+        return resolvedTasks;
     }
 }

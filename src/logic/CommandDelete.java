@@ -14,18 +14,19 @@ public class CommandDelete extends Command {
 	TaskOccurrence deletedTaskOcc = null;
 	Integer indexToAddBack = null;
 	
-	CommandDelete(ArrayList<TaskAbstraction> listOfTasks, ArrayList<Task> listOfShownTasks, ArrayList<Integer> indexesToDelete) throws Exception{
-		Collections.sort(indexesToDelete);
-		for (int i = indexesToDelete.size() - 1; i >= 0; i--) {
-			int curIndex = indexesToDelete.get(i);
-			if(curIndex < 1 || curIndex > listOfShownTasks.size()){
-				throw new Exception("Invalid index");
-			}
-		}
-		this.indexesToDelete = indexesToDelete;
-		this.listOfShownTasks = listOfShownTasks;
-		this.listOfTasks = listOfTasks;
-	}
+    CommandDelete(ArrayList<TaskAbstraction> listOfTasks, ArrayList<Task> listOfShownTasks,
+            ArrayList<Integer> indexesToDelete) throws Exception {
+        Collections.sort(indexesToDelete);
+        for (int i = indexesToDelete.size() - 1; i >= 0; i--) {
+            int curIndex = indexesToDelete.get(i);
+            if (curIndex < 1 || curIndex > listOfShownTasks.size()) {
+                throw new Exception("Invalid index");
+            }
+        }
+        this.indexesToDelete = indexesToDelete;
+        this.listOfShownTasks = listOfShownTasks;
+        this.listOfTasks = listOfTasks;
+    }
 	
 	@Override
 	String execute() {
@@ -40,8 +41,8 @@ public class CommandDelete extends Command {
 				TaskAbstraction curAbstractTask = listOfTasks.get(j);
 				int k = 0;
 				while (k < curAbstractTask.getTaskOccurrencesSize()) {
-					Task curOccurrence = curAbstractTask.resolve(k);
-					if (taskToDelete.compareTo(curOccurrence) == 0) {
+					Task curTask = curAbstractTask.resolve(k);
+					if (taskToDelete.compareTo(curTask) == 0) {
 						if(curAbstractTask.getTaskOccurrencesSize() == 1){
 							listOfTasks.remove(curAbstractTask);
 							deletedAbsTask = curAbstractTask;

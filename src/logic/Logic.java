@@ -415,9 +415,16 @@ public class Logic {
                     return deleteCommand.execute();
                 case EDIT :
                     logger.info("EDIT command detected");
-                   
-                    return "";//editItem(userTasks, indexList, isUserInput,
-                            //isUndoHistory);
+                    indexList = parseIntList(argumentList);
+                    Command editCommand;
+                    try {
+                        editCommand = new CommandEdit(listOfTasks, listOfShownTasks, indexList.get(0), userTask);
+                    } catch (Exception e) {
+                        return e.getMessage();
+                    }
+                    historyObject.pushCommand(editCommand, true);
+                    historyObject.clearUndoHistoryList();
+                    return editCommand.execute();
                 case DISPLAY :
                     logger.info("DISPLAY command detected");
                     return "";//displayItems(argumentList);
@@ -505,15 +512,15 @@ public class Logic {
         listOfShownTasks.clear();
         if (listFilter.isEmpty()) {
             // default view - first closest date, second closest date, floating
-            ArrayList<TaskAbstraction> listOfFloating = new ArrayList<TaskAbstraction>();
-            ArrayList<TaskAbstraction> listOfEventsDeadlines = new ArrayList<TaskAbstraction>();
+            ArrayList<Task> listOfFloating = new ArrayList<Task>();
+            ArrayList<Task> listOfEventsDeadlines = new ArrayList<Task>();
             
             separateFloatingTasksFromOthers(listOfFloating,
                     listOfEventsDeadlines);
             Collections.sort(listOfEventsDeadlines);
             
-            ArrayList<TaskAbstraction> listOfFirstDate = new ArrayList<TaskAbstraction>();
-            ArrayList<TaskAbstraction> listOfSecondDate = new ArrayList<TaskAbstraction>();
+            ArrayList<Task> listOfFirstDate = new ArrayList<Task>();
+            ArrayList<Task> listOfSecondDate = new ArrayList<Task>();
             getTasksInFirstAndSecondDate(listOfEventsDeadlines,
                     listOfFirstDate, listOfSecondDate);
             
@@ -569,10 +576,15 @@ public class Logic {
      * @param listOfEventsDeadlines
      */
     void separateFloatingTasksFromOthers(
-            ArrayList<TaskAbstraction> listOfFloating,
-            ArrayList<TaskAbstraction> listOfEventsDeadlines) {
+            ArrayList<Task> listOfFloating,
+            ArrayList<Task> listOfEventsDeadlines) {
+
+        ArrayList<Task> resolvedTasks = new ArrayList<Task>();
         for (int i = 0; i < listOfTasks.size(); i++) {
-            TaskAbstraction curTask = listOfTasks.get(i);
+            resolvedTasks.addAll(listOfTasks.get(i).resolveAll());
+        }
+        for (int i = 0; i < resolvedTasks.size(); i++) {
+            Task curTask = resolvedTasks.get(i);
             if (!curTask.isDone()) {
                 if (curTask.hasEndingTime()) {
                     listOfEventsDeadlines.add(curTask);
@@ -593,10 +605,10 @@ public class Logic {
      * @param listOfSecondDate
      */
     void getTasksInFirstAndSecondDate(
-            ArrayList<TaskAbstraction> listOfEventsDeadlines,
-            ArrayList<TaskAbstraction> listOfFirstDate, ArrayList<TaskAbstraction> listOfSecondDate) {
+            ArrayList<Task> listOfEventsDeadlines,
+            ArrayList<Task> listOfFirstDate, ArrayList<Task> listOfSecondDate) {
         if (listOfEventsDeadlines.size() != 0) {
-            TaskAbstraction firstTask;
+            Task firstTask;
             Calendar todayDate = new GregorianCalendar();
             Calendar firstDate = null, secondDate = null;
             int i = 0;
@@ -624,7 +636,7 @@ public class Logic {
                         listOfFirstDate);
                 while (i < listOfEventsDeadlines.size()
                         && secondDate == null) {
-                    TaskAbstraction curTask = listOfEventsDeadlines.get(i);
+                    Task curTask = listOfEventsDeadlines.get(i);
                     Calendar curDate = curTask.getTime();
                     if (!isTimingInDay(curDate, firstDate)) {
                         secondDate = curDate;
@@ -664,7 +676,7 @@ public class Logic {
         }
     }
 
-    void addTitleForFloating(ArrayList<TaskAbstraction> listOfFloating,
+    void addTitleForFloating(ArrayList<Task> listOfFloating,
             List<String> listOfTitles) {
         if (listOfFloating.size() != 0) {
             listOfTitles.add("Other Tasks");
@@ -792,14 +804,14 @@ public class Logic {
      * @param listOfItemsInDate
      * @param listOfTitles
      */
-    void addTitleForDate(ArrayList<TaskAbstraction> listOfItemsInDate,
+    void addTitleForDate(ArrayList<Task> listOfItemsInDate,
             List<String> listOfTitles) {
         if (listOfItemsInDate.size() != 0) {
             Calendar curTime = Calendar.getInstance();
             int curDate = curTime.get(Calendar.DATE);
             int curMonth = curTime.get(Calendar.MONTH) + 1;
             int curYear = curTime.get(Calendar.YEAR);
-            TaskAbstraction curItem = listOfItemsInDate.get(0);
+            Task curItem = listOfItemsInDate.get(0);
             
             Calendar curItemTime = curItem.getTime();
             int curItemDate = curItemTime.get(Calendar.DATE);
@@ -841,7 +853,7 @@ public class Logic {
         }
     }
 
-    void addTasksToList(ArrayList<TaskAbstraction> listOfFirstDate) {
+    void addTasksToList(ArrayList<Task> listOfFirstDate) {
         if (listOfFirstDate.size() >= displaySize) {
             listOfShownTasks.addAll(listOfFirstDate.subList(0, displaySize));
         } else {
@@ -861,10 +873,10 @@ public class Logic {
      * @param date
      * @return
      */
-    void getTasksInDay(ArrayList<TaskAbstraction> listOfEventsDeadlines,
-            Calendar date, ArrayList<TaskAbstraction> tasksInDay) {
+    void getTasksInDay(ArrayList<Task> listOfEventsDeadlines,
+            Calendar date, ArrayList<Task> tasksInDay) {
         for (int i = 0; i < listOfEventsDeadlines.size(); i++) {
-            TaskAbstraction curTask = listOfEventsDeadlines.get(i);
+            Task curTask = listOfEventsDeadlines.get(i);
             Calendar itemTime = curTask.getTime();
             if (isTimingInDay(itemTime, date)) {
                 tasksInDay.add(curTask);
