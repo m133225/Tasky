@@ -4,8 +4,7 @@ package logic;
 import static org.junit.Assert.assertEquals;
 
 
-import global.Command;
-import global.Task;
+import global.UserInput;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -42,7 +41,7 @@ public class TestSystem {
     @Test
     public void testLogicParserSimpleAdd() throws Exception {
 
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         String executionResult = logicObject.executeCommand(commandObject, true,
                 true);
@@ -56,7 +55,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserSimpleDelete() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         logicObject.executeCommand(commandObject, true,
                 true);
@@ -75,7 +74,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserStorageSimpleUndo() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         logicObject.executeCommand(commandObject, true,
                 true);
@@ -90,9 +89,9 @@ public class TestSystem {
         logicObject.executeCommand(commandObject, true,
                 true);
         
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         resultStr = message.get(0).getAllInfo();
@@ -101,7 +100,7 @@ public class TestSystem {
     
     @Test
     public void testLogicParserStorageSimpleMark() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         logicObject.executeCommand(commandObject, true,
                 true);
@@ -111,9 +110,9 @@ public class TestSystem {
         logicObject.executeCommand(commandObject, true,
                 true);
         
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         resultStr = message.get(0).getAllInfo();
@@ -127,7 +126,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserStorageSimpleRedo() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         logicObject.executeCommand(commandObject, true,
                 true);
@@ -151,9 +150,9 @@ public class TestSystem {
         logicObject.executeCommand(commandObject, true,
                 true);
         
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         resultStr = message.get(0).getAllInfo();
@@ -167,7 +166,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserStorageEditOne() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         
         logicObject.executeCommand(commandObject, true,
                 true);
@@ -182,9 +181,9 @@ public class TestSystem {
         logicObject.showUpdatedItems();
         logicObject.executeCommand(commandObject, true,
                 true);
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         resultStr = message.get(0).getAllInfo();
@@ -200,7 +199,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserStorageEditTwo() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         logicObject.executeCommand(commandObject, true,
                 true);
         
@@ -222,9 +221,9 @@ public class TestSystem {
                     true);
         
         
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         for( int i=0; i < listOfTasks.size(); i++ ) {
@@ -242,7 +241,7 @@ public class TestSystem {
      */
     @Test
     public void testLogicParserStorageDelete() throws Exception {
-        Command commandObject = parserObj.parseCommand("add task1");
+        UserInput commandObject = parserObj.parseCommand("add task1");
         logicObject.executeCommand(commandObject, true, true);
         commandObject = parserObj.parseCommand("add task2");
         logicObject.executeCommand(commandObject, true, true);
@@ -262,9 +261,9 @@ public class TestSystem {
         logicObject.executeCommand(commandObject, true,
                 true);
     
-        ArrayList<Task> listOfTasks = logicObject.listOfTasks;
+        ArrayList<TaskAbstraction> listOfTasks = logicObject.listOfTasks;
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         for (int i = 0; i < listOfTasks.size(); i++) {
             resultStr += message.get(i).getAllInfo() + " ";
@@ -280,11 +279,11 @@ public class TestSystem {
     @Test
     public void testLogicStorage() throws Exception {
 
-        ArrayList<Task> listOfTasks = new ArrayList<Task>();
-        Task task1 = new Task("task");
+        ArrayList<TaskAbstraction> listOfTasks = new ArrayList<TaskAbstraction>();
+        TaskAbstraction task1 = new TaskAbstraction("task");
         listOfTasks.add(task1);
         storageObj.writeItemList(listOfTasks);
-        ArrayList<Task> message = storageObj.getItemList();
+        ArrayList<TaskAbstraction> message = storageObj.getItemList();
         String resultStr = "";
         
         for(int i = 0; i < message.size(); i++){

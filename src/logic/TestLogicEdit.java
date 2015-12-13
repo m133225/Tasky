@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import global.Task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -19,9 +18,9 @@ public class TestLogicEdit {
         saveFile.delete();
         logicObject = new Logic();
         
-        logicObject.listOfTasks.add(new Task("Item 1"));
-        logicObject.listOfTasks.add(new Task("Item 2"));
-        logicObject.listOfTasks.add(new Task("Item 3"));
+        logicObject.listOfTasks.add(new TaskAbstraction("Item 1"));
+        logicObject.listOfTasks.add(new TaskAbstraction("Item 2"));
+        logicObject.listOfTasks.add(new TaskAbstraction("Item 3"));
     }
     
     /*
@@ -29,12 +28,12 @@ public class TestLogicEdit {
      */
     @Test
     public void TestEditOne(){
-        ArrayList<Task> listToEdit = new ArrayList<Task>();
+        ArrayList<TaskAbstraction> listToEdit = new ArrayList<TaskAbstraction>();
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         String message;
         
         indexList.add(3);
-        listToEdit.add(new Task("New item 99"));
+        listToEdit.add(new TaskAbstraction("New item 99"));
         message = logicObject.editItem(listToEdit, indexList, true, true);
         assertEquals("Error: There is no item at this index.", message);
         assertEquals("Item 1", logicObject.listOfTasks.get(0).getName());
@@ -71,12 +70,12 @@ public class TestLogicEdit {
      */
     @Test
     public void TestEditTwo(){
-        ArrayList<Task> listToEdit = new ArrayList<Task>();
+        ArrayList<TaskAbstraction> listToEdit = new ArrayList<TaskAbstraction>();
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         String message;
         
         indexList.add(0);
-        listToEdit.add(new Task("New item 1"));
+        listToEdit.add(new TaskAbstraction("New item 1"));
         message = logicObject.editItem(listToEdit, indexList, true, true);
         assertEquals("Item(s) successfully edited.", message);
         assertEquals("New item 1", logicObject.listOfTasks.get(0).getName());
@@ -86,7 +85,7 @@ public class TestLogicEdit {
         indexList.clear();
         listToEdit.clear();
         indexList.add(1);
-        listToEdit.add(new Task("New item 2"));
+        listToEdit.add(new TaskAbstraction("New item 2"));
         message = logicObject.editItem(listToEdit, indexList, true, true);
         assertEquals("Item(s) successfully edited.", message);
         assertEquals("New item 1", logicObject.listOfTasks.get(0).getName());
@@ -96,7 +95,7 @@ public class TestLogicEdit {
         indexList.clear();
         listToEdit.clear();
         indexList.add(2);
-        listToEdit.add(new Task("New item 3"));
+        listToEdit.add(new TaskAbstraction("New item 3"));
         message = logicObject.editItem(listToEdit, indexList, true, true);
         assertEquals("Item(s) successfully edited.", message);
         assertEquals("New item 1", logicObject.listOfTasks.get(0).getName());
@@ -107,7 +106,7 @@ public class TestLogicEdit {
         logicObject.showUpdatedItems();
         listToEdit.clear();
         indexList.add(1);
-        listToEdit.add(new Task("item 2 changed again!"));
+        listToEdit.add(new TaskAbstraction("item 2 changed again!"));
         message = logicObject.editItem(listToEdit, indexList, true, true);
         assertEquals("Item(s) successfully edited.", message);
         assertEquals("New item 1", logicObject.listOfTasks.get(0).getName());

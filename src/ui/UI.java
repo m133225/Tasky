@@ -1,8 +1,10 @@
 package ui;
 
+import global.Task;
+
 import java.util.List;
 
-import global.Task;
+import logic.TaskAbstraction;
 
 /**
  * This class serves as interface for GraphicalUI and TextUI

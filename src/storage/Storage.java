@@ -1,10 +1,10 @@
 package storage;
 
-import global.Task;
-
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import logic.TaskAbstraction;
 
 public interface Storage {
     static final String LINE_SEPARATOR = System.getProperty("line.separator");
@@ -49,7 +49,7 @@ public interface Storage {
      * @return true if file is saved
      * @throws IOException 
      */
-    public boolean writeItemList(ArrayList<Task> tasks) throws IOException;
+    public boolean writeItemList(ArrayList<TaskAbstraction> tasks) throws IOException;
 
     /**
      * Saves path to text file
@@ -65,7 +65,7 @@ public interface Storage {
      * @return ArrayList of tasks read from file
      * @throws FileNotFoundException if there is no file in the filePath
      */
-    public ArrayList<Task> getItemList() throws FileNotFoundException;
+    public ArrayList<TaskAbstraction> getItemList() throws FileNotFoundException;
     
     public default String getHelpMessage() {
         return HELP_MESSAGE;

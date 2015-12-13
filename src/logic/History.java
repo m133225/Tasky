@@ -1,5 +1,5 @@
 package logic;
-import global.Command;
+import global.UserInput;
 
 import java.util.ArrayList;
 import java.util.logging.Logger;

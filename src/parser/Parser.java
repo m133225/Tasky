@@ -1,7 +1,6 @@
 package parser;
 
-import global.Command;
-import global.Task;
+import global.UserInput;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +9,8 @@ import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.logging.Logger;
+
+import global.Task;
 
 /**
  * This class contains the parser class which the logic passes user commands to,
@@ -114,37 +115,6 @@ public class Parser {
     static final String[] INTERVAL_PERIODIC = { "every" , "repeats" };
     static final String[] INSTANCES_PERIODIC = { "for" };
     
-    class KeywordMarker implements Comparable<KeywordMarker> {
-        int index;
-        FieldType typeOfField;
-
-        int getIndex() {
-            return index;
-        }
-
-        void setIndex(int i) {
-            index = i;
-        }
-
-        FieldType getFieldType() {
-            return typeOfField;
-        }
-
-        void setFieldType(FieldType fieldType) {
-            typeOfField = fieldType;
-        }
-
-        @Override
-        public int compareTo(KeywordMarker o) {
-            if (this.index < o.getIndex()) {
-                return -1;
-            } else if (this.index > o.getIndex()) {
-                return 1;
-            } else {
-                return 0;
-            }
-        }
-    }
     
     public Parser(){
         initialiseKeywordLists();
@@ -189,18 +159,18 @@ public class Parser {
      * @param command
      * @return commandObject to be executed, or null if invalid
      */
-    public Command parseCommand(String commandString) throws Exception {
+    public UserInput parseCommand(String commandString) throws Exception {
         commandString = commandString.trim();
-        Command.Type commandType = identifyType(commandString);
+        UserInput.Type commandType = identifyType(commandString);
         commandString = removeFirstWord(commandString);
-        Command commandObject = new Command(commandType);
+        UserInput commandObject = new UserInput(commandType);
         Task taskObject = new Task();
         String[] argumentArray;
         
         switch (commandType) {
             case ADD :
                 extractTaskInformation(commandString, taskObject);
-                commandObject.addTask(taskObject);
+                commandObject.setTask(taskObject);
                 break;
             case EDIT :
                 if (commandString.split(WHITE_SPACE_REGEX).length == 1) {// if insufficient arguments .eg "edit"
@@ -211,7 +181,7 @@ public class Parser {
                     commandString = removeFirstWord(commandString);
 
                     extractFieldInformation(commandString, taskObject);
-                    commandObject.addTask(taskObject);
+                    commandObject.setTask(taskObject);
                 }
                 break;
             case DELETE :
@@ -235,7 +205,7 @@ public class Parser {
                 break;
             case SEARCH :
                 extractFieldInformation(commandString, taskObject);
-                commandObject.addTask(taskObject);
+                commandObject.setTask(taskObject);
                 break;
             case ALIAS :
                 argumentArray = getAliasArgument(commandString);
@@ -304,38 +274,38 @@ public class Parser {
         return true;
     }
 
-    Command.Type identifyType(String commandString) throws Exception {
+    UserInput.Type identifyType(String commandString) throws Exception {
         if (commandString.length() == 0) {
             logger.info("identifyType: Command string is empty!");
             throw new Exception(ERROR_EMPTY_COMMAND_STRING);
         } else {
             String firstWord = commandString.split(WHITE_SPACE_REGEX, 2)[0];
             if (isCommandKeyword(firstWord, addKeywords)) {
-                return Command.Type.ADD;
+                return UserInput.Type.ADD;
             } else if (isCommandKeyword(firstWord, editKeywords)) {
-                return Command.Type.EDIT;
+                return UserInput.Type.EDIT;
             } else if (isCommandKeyword(firstWord, deleteKeywords)) {
-                return Command.Type.DELETE;
+                return UserInput.Type.DELETE;
             } else if (isCommandKeyword(firstWord, undoKeywords)) {
-                return Command.Type.UNDO;
+                return UserInput.Type.UNDO;
             } else if (isCommandKeyword(firstWord, redoKeywords)) {
-                return Command.Type.REDO;
+                return UserInput.Type.REDO;
             } else if (isCommandKeyword(firstWord, savetoKeywords)) {
-                return Command.Type.SAVETO;
+                return UserInput.Type.SAVETO;
             } else if (isCommandKeyword(firstWord, displayKeywords)) {
-                return Command.Type.DISPLAY;
+                return UserInput.Type.DISPLAY;
             } else if (isCommandKeyword(firstWord, exitKeywords)) {
-                return Command.Type.EXIT;
+                return UserInput.Type.EXIT;
             } else if (isCommandKeyword(firstWord, markKeywords)) {
-                return Command.Type.MARK;
+                return UserInput.Type.MARK;
             } else if (isCommandKeyword(firstWord, unmarkKeywords)) {
-                return Command.Type.UNMARK;
+                return UserInput.Type.UNMARK;
             } else if (isCommandKeyword(firstWord, searchKeywords)) {
-                return Command.Type.SEARCH;
+                return UserInput.Type.SEARCH;
             } else if (isCommandKeyword(firstWord, helpKeywords)) {
-                return Command.Type.HELP;
+                return UserInput.Type.HELP;
             } else if (isCommandKeyword(firstWord, aliasKeywords)) {
-                return Command.Type.ALIAS;
+                return UserInput.Type.ALIAS;
             } else {
                 logger.info("identifyType: invalid command");
                 throw new Exception(ERROR_INVALID_COMMAND_SPECIFIED);

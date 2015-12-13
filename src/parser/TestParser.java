@@ -1,8 +1,7 @@
 package parser;
 
 import static org.junit.Assert.assertEquals;
-import global.Command;
-import global.Task;
+import global.UserInput;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+
+import logic.TaskAbstraction;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class TestParser {
     //test add without a name
     @Test
     public void testParserAddEmptyName() {
-        Command message;
+        UserInput message;
         try {
             message = parserObj.parseCommand("add");
         } catch (Exception e) {
@@ -41,7 +42,7 @@ public class TestParser {
     //test delete without a index
     @Test
     public void testParserDeleteEmptyName() {
-        Command message;
+        UserInput message;
         try {
             message = parserObj.parseCommand("delete");
         } catch (Exception e) {
@@ -55,7 +56,7 @@ public class TestParser {
     //test edit without argument
     @Test
     public void testParserEditEmptyName() {
-        Command message;
+        UserInput message;
         try {
             message = parserObj.parseCommand("edit");
         } catch (Exception e) {
@@ -69,7 +70,7 @@ public class TestParser {
     //test edit on special fields
     @Test
     public void testParserEditSpecial() throws Exception {
-        Command message;
+        UserInput message;
 
         message = parserObj.parseCommand("edit 1 every 2 days for 2");
         assertEquals("Name: null Starting time: null Ending Time: null Location: null Period Interval: null Period Repeats: null Done: false", message.getTask(0).getAllInfo());
@@ -80,7 +81,7 @@ public class TestParser {
     //test basic search
     @Test
     public void testParserSearch() throws Exception {
-        Command message;
+        UserInput message;
 
         message = parserObj.parseCommand("search task");
         String actual = "Name: task Starting time: null Ending Time: null Location: null Period Interval: null Period Repeats: null Done: false";
@@ -92,7 +93,7 @@ public class TestParser {
     //test saveto
     @Test
     public void testParserSaveto() throws Exception {
-        Command message;
+        UserInput message;
         message = parserObj.parseCommand("saveto new.txt");
         String actual = "new.txt";
         assertEquals(actual, message.getArguments().get(0));    
@@ -100,7 +101,7 @@ public class TestParser {
     
     @Test
     public void testParserMark() throws Exception {
-        Command message;
+        UserInput message;
         message = parserObj.parseCommand("mark 1");
         String actual = "1";
         assertEquals(actual, message.getArguments().get(0));    
@@ -108,7 +109,7 @@ public class TestParser {
     
     @Test
     public void testParserUnMark() throws Exception {
-        Command message;
+        UserInput message;
         message = parserObj.parseCommand("unmark 1");
         String actual = "1";
         assertEquals(actual, message.getArguments().get(0));    
@@ -116,18 +117,18 @@ public class TestParser {
     
     @Test
     public void testParserAdd() throws Exception {
-        Command message;
-        Task task = new Task("task");
-        Command cmd = new Command(Command.Type.ADD,task);
+        UserInput message;
+        TaskAbstraction task = new TaskAbstraction("task");
+        UserInput cmd = new UserInput(UserInput.Type.ADD,task);
         message = parserObj.parseCommand("add task");
         assertEquals(true,cmd.compareTo(message) );
     }
     
     @Test
     public void testParserDelete() throws Exception {
-        Command message;
-        Task task = new Task();
-        Command cmd = new Command(Command.Type.DELETE,task);
+        UserInput message;
+        TaskAbstraction task = new TaskAbstraction();
+        UserInput cmd = new UserInput(UserInput.Type.DELETE,task);
         message = parserObj.parseCommand("delete 1");
         assertEquals("DELETE",message.getCommandType().toString());
     }

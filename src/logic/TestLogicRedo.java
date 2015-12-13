@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import global.Task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -30,8 +29,8 @@ Logic logicObject;
     
     @Test
     public void logicRedoadd(){
-        ArrayList<Task> newTasks = new ArrayList<Task>();
-        newTasks.add(new Task("item 1"));
+        ArrayList<TaskAbstraction> newTasks = new ArrayList<TaskAbstraction>();
+        newTasks.add(new TaskAbstraction("item 1"));
         logicObject.addItem(newTasks, new ArrayList<Integer>(), true, true);
         logicObject.undoCommand();
 
@@ -42,13 +41,13 @@ Logic logicObject;
 
     @Test
     public void logicRedoMultipleDelete(){
-        logicObject.listOfTasks = new ArrayList<Task>();
-        logicObject.listOfTasks.add(new Task("some item 1"));
-        logicObject.listOfTasks.add(new Task("some item 2"));    
-        logicObject.listOfTasks.add(new Task("some item 3"));
-        logicObject.listOfTasks.add(new Task("some item 4"));
-        logicObject.listOfTasks.add(new Task("some item 5"));    
-        logicObject.listOfTasks.add(new Task("some item 6"));
+        logicObject.listOfTasks = new ArrayList<TaskAbstraction>();
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 1"));
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 2"));    
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 3"));
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 4"));
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 5"));    
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 6"));
         
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         
@@ -75,13 +74,13 @@ Logic logicObject;
 
     @Test
     public void logicUndoEdit(){
-        ArrayList<Task> listToEdit = new ArrayList<Task>();
+        ArrayList<TaskAbstraction> listToEdit = new ArrayList<TaskAbstraction>();
         ArrayList<Integer> indexList = new ArrayList<Integer>();
-        logicObject.listOfTasks.add(new Task("some item 2"));    
-        logicObject.listOfTasks.add(new Task("some item 3"));
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 2"));    
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 3"));
         
         indexList.add(0);
-        listToEdit.add(new Task("New item 1"));
+        listToEdit.add(new TaskAbstraction("New item 1"));
 
         logicObject.editItem(listToEdit, indexList, true, true);
         

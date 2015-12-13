@@ -9,15 +9,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import logic.TaskAbstraction;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import global.Task;
-
 public class TestJsonFormatStorage {
     JsonFormatStorage storageObject;
-    ArrayList<Task> result ;
+    ArrayList<TaskAbstraction> result ;
     String TEST_ITEMS = "item11\nitem12\nitem13\n";
 
     @Before
@@ -28,11 +28,11 @@ public class TestJsonFormatStorage {
             File saveFile = new File("save.txt");
             saveFile.delete();
             storageObject = new JsonFormatStorage(true);
-            result = new ArrayList<Task>();
+            result = new ArrayList<TaskAbstraction>();
             
             String[] strArr = TEST_ITEMS.split(" ");
             for(int i = 0; i < strArr.length; i++){
-                Task newTask = new Task(strArr[i]);
+                TaskAbstraction newTask = new TaskAbstraction(strArr[i]);
                 result.add(newTask);
             }
             
@@ -67,7 +67,7 @@ public class TestJsonFormatStorage {
     //test to get item from saved file
     @Test
     public void testGetItemList() throws IOException{
-        ArrayList<Task> message = storageObject.getItemList();
+        ArrayList<TaskAbstraction> message = storageObject.getItemList();
         String resultStr = "";
         
         for(int i = 0; i < message.size(); i++){

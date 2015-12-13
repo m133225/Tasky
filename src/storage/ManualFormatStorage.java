@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
 
-import global.Task;
+import logic.TaskAbstraction;
 
 public class ManualFormatStorage implements Storage {
     Storage storageObject;
@@ -32,10 +32,10 @@ public class ManualFormatStorage implements Storage {
      * Task data is saved in the following format: "[task name];[date]" on each line. To be improved
      */
     @Override
-    public boolean writeItemList(ArrayList<Task> task) throws IOException {
+    public boolean writeItemList(ArrayList<TaskAbstraction> task) throws IOException {
         String content = "";
         for (int i = 0; i < task.size(); i++) {
-            Task curTask = task.get(i);
+            TaskAbstraction curTask = task.get(i);
             if (curTask != null) {
                 content += curTask.getName();
                 if (curTask.getEndingTime() != null) {
@@ -86,14 +86,14 @@ public class ManualFormatStorage implements Storage {
      * @see storage.Storage#getItemList()
      */
     @Override
-    public ArrayList<Task> getItemList() throws FileNotFoundException {
+    public ArrayList<TaskAbstraction> getItemList() throws FileNotFoundException {
         File file = new File(FILE_PATH);
         Scanner sc = new Scanner(file);
-        ArrayList<Task> taskList = new ArrayList<Task>();
+        ArrayList<TaskAbstraction> taskList = new ArrayList<TaskAbstraction>();
 
         while (sc.hasNextLine()) {
             String nextLine = sc.nextLine();
-            Task taskObj = new Task();
+            TaskAbstraction taskObj = new TaskAbstraction();
             if (nextLine.contains(ARGUMENTS_DATE)) {
                 extractDate(nextLine, taskObj);
             } else {
@@ -105,7 +105,7 @@ public class ManualFormatStorage implements Storage {
         return taskList;
     }
 
-    public void extractDate(String arg, Task taskObj) { // might want to store the date differently, up to you
+    public void extractDate(String arg, TaskAbstraction taskObj) { // might want to store the date differently, up to you
         String[] newArgs = arg.split(ARGUMENTS_DATE);
         Calendar calendarRead = new GregorianCalendar();
         try {

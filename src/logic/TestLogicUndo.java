@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import global.Task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import org.junit.Test;
 public class TestLogicUndo {
     Logic logicObject;
 
-    public void addHelper(Task newTask) {
+    public void addHelper(TaskAbstraction newTask) {
         logicObject.listOfTasks.add(newTask);
         logicObject.listOfShownTasks.add(newTask);
     }
@@ -37,8 +36,8 @@ public class TestLogicUndo {
     @Test
     public void logicUndoAdd(){
 
-        ArrayList<Task> newTasks = new ArrayList<Task>();
-        newTasks.add(new Task("item 1"));
+        ArrayList<TaskAbstraction> newTasks = new ArrayList<TaskAbstraction>();
+        newTasks.add(new TaskAbstraction("item 1"));
         logicObject.addItem(newTasks, new ArrayList<Integer>(), true, true);
         logicObject.showUpdatedItems();
         String message = logicObject.undoCommand();        
@@ -48,10 +47,10 @@ public class TestLogicUndo {
     //test undo before multiple delete
     @Test
     public void logicUndoMultipleDelete(){
-        logicObject.listOfTasks = new ArrayList<Task>();
-        logicObject.listOfTasks.add(new Task("some item 1"));
-        logicObject.listOfTasks.add(new Task("some item 2"));    
-        logicObject.listOfTasks.add(new Task("some item 3"));
+        logicObject.listOfTasks = new ArrayList<TaskAbstraction>();
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 1"));
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 2"));    
+        logicObject.listOfTasks.add(new TaskAbstraction("some item 3"));
         
         ArrayList<Integer> indexList = new ArrayList<Integer>();        
 
@@ -68,15 +67,15 @@ public class TestLogicUndo {
     @Test
     public void logicUndoEdit(){
 
-        ArrayList<Task> listToEdit = new ArrayList<Task>();
+        ArrayList<TaskAbstraction> listToEdit = new ArrayList<TaskAbstraction>();
         ArrayList<Integer> indexList = new ArrayList<Integer>();
         
-        listToEdit.add(new Task("Old item 1"));
+        listToEdit.add(new TaskAbstraction("Old item 1"));
         logicObject.addItem(listToEdit, new ArrayList<Integer>(), true, true);
 
         indexList.add(0);
         listToEdit.clear();
-        listToEdit.add(new Task("New item 1"));
+        listToEdit.add(new TaskAbstraction("New item 1"));
         logicObject.editItem(listToEdit, indexList, true, true);
 
         String message = logicObject.undoCommand();        

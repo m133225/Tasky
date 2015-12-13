@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import global.Task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,22 +16,22 @@ public class TestLogicAdd {
      * Helper functions
      */
     public String addItem(String taskName){
-        ArrayList<Task> newTasks = new ArrayList<Task>();
-        newTasks.add(new Task(taskName));
+        ArrayList<TaskAbstraction> newTasks = new ArrayList<TaskAbstraction>();
+        newTasks.add(new TaskAbstraction(taskName));
         return logicObject.addItem(newTasks, new ArrayList<Integer>(), true, true);
     }
     
     public String addItem(String taskName, Calendar deadline){
-        ArrayList<Task> newTasks = new ArrayList<Task>();
-        Task curTask = new Task(taskName);
+        ArrayList<TaskAbstraction> newTasks = new ArrayList<TaskAbstraction>();
+        TaskAbstraction curTask = new TaskAbstraction(taskName);
         curTask.setEndingTime(deadline);
         newTasks.add(curTask);
         return logicObject.addItem(newTasks, new ArrayList<Integer>(), true, true);
     }
     
     public String addItem(String taskName, Calendar startTime, Calendar endTime){
-        ArrayList<Task> newTasks = new ArrayList<Task>();
-        Task curTask = new Task(taskName);
+        ArrayList<TaskAbstraction> newTasks = new ArrayList<TaskAbstraction>();
+        TaskAbstraction curTask = new TaskAbstraction(taskName);
         curTask.setStartingTime(startTime);
         curTask.setEndingTime(endTime);
         newTasks.add(curTask);

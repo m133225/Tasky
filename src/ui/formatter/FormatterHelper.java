@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import global.ITask;
 import global.Task;
 
 /**
@@ -165,7 +166,7 @@ public class FormatterHelper {
             //including the number column
             List<Object[]> currentTaskListData = new ArrayList<Object[]>();
             for (int i = 0; i < currentTaskList.size(); i++) {
-                Task currentTask = currentTaskList.get(i);
+                ITask currentTask = currentTaskList.get(i);
                 Object[] currentTaskData = new Object[COLUMN_COUNT];
                 
                 for (int j = 0; j < COLUMN_COUNT; j++) {

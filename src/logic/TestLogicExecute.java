@@ -5,8 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.File;
 import java.io.IOException;
 
-import global.Command;
-import global.Task;
+import global.UserInput;
 
 import org.junit.After;
 import org.junit.Before;
@@ -19,7 +18,7 @@ public class TestLogicExecute {
     Logic logicObject;
     File saveFile;
     
-    public void addHelper(Task newTask){
+    public void addHelper(TaskAbstraction newTask){
         logicObject.listOfTasks.add(newTask);
         logicObject.listOfShownTasks.add(newTask);
     }
@@ -37,11 +36,11 @@ public class TestLogicExecute {
             e.printStackTrace();
         }
         
-        Task task_1 = new Task();
+        TaskAbstraction task_1 = new TaskAbstraction();
         task_1.setName("Item 1");
-        Task task_2 = new Task();
+        TaskAbstraction task_2 = new TaskAbstraction();
         task_2.setName("Item 2");
-        Task task_3 = new Task();
+        TaskAbstraction task_3 = new TaskAbstraction();
         task_3.setName("Item 3");
         addHelper(task_1);
         addHelper(task_2);
@@ -50,95 +49,95 @@ public class TestLogicExecute {
     
     @Test
     public void logicExecuteAdd(){
-        Task task;
-        Command commandObject;
+        TaskAbstraction task;
+        UserInput commandObject;
         // case 1
-        task = new Task();
+        task = new TaskAbstraction();
         task.setName("Submit assignment");
-        commandObject = new Command(Command.Type.ADD, task);
+        commandObject = new UserInput(UserInput.Type.ADD, task);
         assertEquals("Item(s) successfully added.", logicObject.executeCommand(commandObject, true, true));
         
         // case 2
         task.setName("%% Random item %%");
-        commandObject = new Command(Command.Type.ADD, task);
+        commandObject = new UserInput(UserInput.Type.ADD, task);
         assertEquals("Item(s) successfully added.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteDelete(){
-        Command commandObject;
+        UserInput commandObject;
         String[] args;
         
         args = new String[1];
         args[0] = "2";
-        commandObject = new Command(Command.Type.DELETE, args);
+        commandObject = new UserInput(UserInput.Type.DELETE, args);
         assertEquals("Item(s) successfully deleted.", logicObject.executeCommand(commandObject, true, true));
         
     }
     
     @Test
     public void logicExecuteDisplay(){
-        Command commandObject;
+        UserInput commandObject;
         
         // case 1
-        commandObject = new Command(Command.Type.DISPLAY, new String[]{});
+        commandObject = new UserInput(UserInput.Type.DISPLAY, new String[]{});
         assertEquals("Displaying items.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteUndo(){
-        Command commandObject;
+        UserInput commandObject;
         // case 1
-        commandObject = new Command(Command.Type.UNDO);
+        commandObject = new UserInput(UserInput.Type.UNDO);
         assertEquals("Error: No history found.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteRedo(){
-        Command commandObject;
+        UserInput commandObject;
         // case 1
-        commandObject = new Command(Command.Type.REDO);
+        commandObject = new UserInput(UserInput.Type.REDO);
         assertEquals("Error: No history found.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteSavePath(){
-        Command commandObject;
+        UserInput commandObject;
         String[] args;
         
         args = new String[1];
         args[0] = "save.txt";
-        commandObject = new Command(Command.Type.SAVETO, args);
+        commandObject = new UserInput(UserInput.Type.SAVETO, args);
         assertEquals("File path not changed. Entered file path is the same as current one used.", logicObject.executeCommand(commandObject, true, true));
         
         args = new String[1];
         args[0] = "anotherSave.txt";
-        commandObject = new Command(Command.Type.SAVETO, args);
+        commandObject = new UserInput(UserInput.Type.SAVETO, args);
         assertEquals("File path successfully changed.", logicObject.executeCommand(commandObject, true, true));
         
         args = new String[1];
         args[0] = "save.txt";
-        commandObject = new Command(Command.Type.SAVETO, args);
+        commandObject = new UserInput(UserInput.Type.SAVETO, args);
         assertEquals("File path successfully changed.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteMark(){
-        Command commandObject;
+        UserInput commandObject;
         String[] args;
         
         args = new String[1];
         args[0] = "1";
-        commandObject = new Command(Command.Type.MARK, args);
+        commandObject = new UserInput(UserInput.Type.MARK, args);
         assertEquals("Item(s) successfully marked as done.", logicObject.executeCommand(commandObject, true, true));
     }
     
     @Test
     public void logicExecuteNull(){
-        Command commandObject = null;
+        UserInput commandObject = null;
         assertEquals("Error: Invalid command.", logicObject.executeCommand(commandObject, true, true));
         
-        commandObject = new Command(null, new String[]{"123"});
+        commandObject = new UserInput(null, new String[]{"123"});
         assertEquals("Error: Handler for this command type has not been defined.", logicObject.executeCommand(commandObject, true, true));
         
     }

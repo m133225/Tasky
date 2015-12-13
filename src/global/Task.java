@@ -1,12 +1,14 @@
 package global;
 
+import global.ITask;
+
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 /**
  * This is a data structure to store the details of a task
  */
-public class Task implements Comparable<Task> {
+public class Task implements ITask {
 
     /*
      * Declaration of variables
@@ -62,7 +64,6 @@ public class Task implements Comparable<Task> {
     }
 
     public Task() {
-
     }
 
     /*
@@ -80,7 +81,6 @@ public class Task implements Comparable<Task> {
      * @return time, format : year month Time hour minute (2014 06 04 24 24)
      * @SuppressWarnings("deprecation")
      */
-    //@@author A0108355H
     public Calendar getEndingTime() {
         return this.endingTime;
     }
@@ -171,8 +171,7 @@ public class Task implements Comparable<Task> {
     public boolean isDone(){
         return this.isDone;
     }
-
-    // change the name of the task
+        
     public boolean setName(String newName) {
         this.name = newName;
         return true;
@@ -224,7 +223,7 @@ public class Task implements Comparable<Task> {
         return newTask;
     }
     
-    public int compareTo(Task taskObj) {
+    public int compareTo(ITask taskObj) {
         Calendar thisTime;
         Calendar objTime;
         if (this.hasStartingTime()) {
@@ -255,5 +254,4 @@ public class Task implements Comparable<Task> {
             }
         }
     }
-
 }

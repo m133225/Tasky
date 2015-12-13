@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.assertEquals;
-import global.Task;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,7 +17,7 @@ public class TestLogicMark {
         saveFile.delete();
         logicObject = new Logic();
         
-        logicObject.listOfTasks.add(new Task("Item 1"));
+        logicObject.listOfTasks.add(new TaskAbstraction("Item 1"));
     }
     
     /**

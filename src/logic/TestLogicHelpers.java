@@ -1,7 +1,6 @@
 package logic;
 
 import static org.junit.Assert.*;
-import global.Task;
 
 import java.io.File;
 import java.util.Calendar;
@@ -32,8 +31,8 @@ public class TestLogicHelpers {
         Calendar dateTwo = new GregorianCalendar();
         dateTwo.clear();
         dateTwo.set(2015, 10, 13);
-        Task taskOne = new Task();
-        Task taskTwo = new Task();
+        TaskAbstraction taskOne = new TaskAbstraction();
+        TaskAbstraction taskTwo = new TaskAbstraction();
         taskOne.setStartingTime(dateOne);
         taskOne.setEndingTime(dateTwo);
         taskTwo.setStartingTime(dateOne);

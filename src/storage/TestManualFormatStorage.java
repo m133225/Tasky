@@ -8,15 +8,15 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import logic.TaskAbstraction;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import global.Task;
-
 public class TestManualFormatStorage {
     Storage storageObject;
-    ArrayList<Task> result ;
+    ArrayList<TaskAbstraction> result ;
     String TEST_ITEMS = "item1\nitem2\nitem3\n";
     
     @Before
@@ -25,10 +25,10 @@ public class TestManualFormatStorage {
             File newSaveFile = new File("newsave.txt");
             newSaveFile.delete();
             storageObject = new ManualFormatStorage();
-            result = new ArrayList<Task>();
+            result = new ArrayList<TaskAbstraction>();
             String[] strArr = TEST_ITEMS.split(" ");
             for(int i = 0; i < strArr.length; i++){
-                Task newTask = new Task(strArr[i]);
+                TaskAbstraction newTask = new TaskAbstraction(strArr[i]);
                 result.add(newTask);
             }
     
@@ -56,7 +56,7 @@ public class TestManualFormatStorage {
     @Test
     public void testGetItemList() throws IOException{
     
-        ArrayList<Task> message = storageObject.getItemList();
+        ArrayList<TaskAbstraction> message = storageObject.getItemList();
         String result = "";
         for(int i = 0; i < message.size(); i++){
             result += message.get(i).getName() + "\n";

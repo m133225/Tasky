@@ -10,10 +10,12 @@ import java.util.Arrays;
 import java.util.Scanner;
 import java.util.logging.Logger;
 
+import logic.TaskAbstraction;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import global.Task;
+import global.ITask;
 
 public class JsonFormatStorage implements Storage {
     Logger logger = Logger.getGlobal(); // use logger.<log level>(message) to log a message. default log level is info
@@ -50,8 +52,7 @@ public class JsonFormatStorage implements Storage {
      * 
      * It saves the data in JSON format.
      */
-    @Override
-    public boolean writeItemList(ArrayList<Task> tasks) throws IOException {
+    public boolean writeItemList(ArrayList<TaskAbstraction> tasks) throws IOException {
         String jsonFormat = convertToJsonFormat(tasks);
         
         File outputFile = new File(currentFilePath);
@@ -65,8 +66,8 @@ public class JsonFormatStorage implements Storage {
         return true;
     }
 
-    private String convertToJsonFormat(ArrayList<Task> tasks) {
-        Task[] tasksArray = new Task[tasks.size()];
+    private String convertToJsonFormat(ArrayList<TaskAbstraction> tasks) {
+        TaskAbstraction[] tasksArray = new TaskAbstraction[tasks.size()];
         tasksArray = tasks.toArray(tasksArray);
         
         String jsonFormat = gson.toJson(tasksArray);
@@ -77,7 +78,6 @@ public class JsonFormatStorage implements Storage {
     /* (non-Javadoc)
      * @see storage.Storage#saveFileToPath(java.lang.String)
      */
-    @Override
     public boolean saveFileToPath(String path) throws IOException {
         boolean isFilePathChanged = false;
         
@@ -105,11 +105,9 @@ public class JsonFormatStorage implements Storage {
             isFilePathChanged = true;
             logger.info("JsonFormat save file to new path: "+path);
         } else {
-            //exist already, check whether it is the same file
-            //with the current one
+            // exist already, check whether it is the same file
+            // with the current one
             if (!currentFilePath.equals(path)) {
-                //copyFile(path, currentFilePath);
-                // removed because the user might want to open an already existing data file
                 currentFilePath = path;
                 isFilePathChanged = true;
                 logger.info("JsonFormat save file to new path: "+path);
@@ -120,7 +118,6 @@ public class JsonFormatStorage implements Storage {
     }
     
     //copy older saved file to newer saved file
-    // @throw IOException
     private void copyFile(String newPath, String oldPath) throws IOException {
         FileReader fr = new FileReader(oldPath);
         FileWriter fw = new FileWriter(newPath);
@@ -137,8 +134,7 @@ public class JsonFormatStorage implements Storage {
      * {@inheritDoc}
      * @throws IllegalStateException if the file does not contain a valid JSON.
      */
-    @Override    
-    public ArrayList<Task> getItemList() throws FileNotFoundException, IllegalStateException {
+    public ArrayList<TaskAbstraction> getItemList() throws FileNotFoundException, IllegalStateException {
         File inputFile = new File(currentFilePath);
         Scanner inputFileScanner = new Scanner(inputFile);
         
@@ -147,20 +143,20 @@ public class JsonFormatStorage implements Storage {
             rawInputData.append(inputFileScanner.nextLine());
         }
         
-        Task[] processedInputData = gson.fromJson(rawInputData.toString(), Task[].class);
-        ArrayList<Task> result;
-        if(processedInputData != null) {
-            result = new ArrayList<>(Arrays.asList(processedInputData));
-        } else {
-            result = new ArrayList<>();
-        }
+        TaskAbstraction[] processedInputData = gson.fromJson(rawInputData.toString(), TaskAbstraction[].class);
+        ArrayList<TaskAbstraction> result;
+		if (processedInputData != null) {
+			result = new ArrayList<>(Arrays.asList(processedInputData));
+		} else {
+			result = new ArrayList<>();
+		}
         
         inputFileScanner.close();
         logger.info("JsonFormat get items");
         return result;
     }
     
-    private String storeInfo(ArrayList<Task> list) {
+    private String storeInfo(ArrayList<TaskAbstraction> list) {
         String loggerMsg = "";
         for (int i = 0; i < list.size(); i++) {
             loggerMsg += list.get(i).getAllInfo() + " ";
