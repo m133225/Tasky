@@ -171,7 +171,7 @@ public class Logic {
             initializeComponentObjects();
             initializeLogFile();
             initializeConfigFile();
-            //updateListOfTasks();
+            updateListOfTasks();
         } catch (FileNotFoundException e) {
             UIObject.showToUser(ERROR_FILE_NOT_FOUND);
         } catch (SecurityException | IOException | NumberFormatException e) {
@@ -460,6 +460,7 @@ public class Logic {
                         return e.getMessage();
                     }
                     historyObject.pushCommand(markCommand, true);
+                    historyObject.clearUndoHistoryList();
                     return markCommand.execute();
                 case UNMARK:
                     logger.info("UNMARK command detected");
@@ -471,6 +472,7 @@ public class Logic {
                         return e.getMessage();
                     }
                     historyObject.pushCommand(unmarkCommand, true);
+                    historyObject.clearUndoHistoryList();
                     return unmarkCommand.execute();
                 case SEARCH:
                     logger.info("SEARCH command detected");
@@ -540,9 +542,9 @@ public class Logic {
             getTasksInFirstAndSecondDate(listOfEventsDeadlines,
                     listOfFirstDate, listOfSecondDate);
             
-            addTasksToList(listOfFirstDate);
-            addTasksToList(listOfSecondDate);
-            addTasksToList(listOfFloating);
+            addTasksToShownList(listOfFirstDate);
+            addTasksToShownList(listOfSecondDate);
+            addTasksToShownList(listOfFloating);
             
             List<String> listOfTitles = new ArrayList<String>();
             addTitleForDate(listOfFirstDate, listOfTitles);
@@ -869,12 +871,26 @@ public class Logic {
         }
     }
 
-    void addTasksToList(ArrayList<Task> listOfFirstDate) {
+    void addTasksToShownList(ArrayList<Task> listOfFirstDate) {
         if (listOfFirstDate.size() >= displaySize) {
             listOfShownTasks.addAll(listOfFirstDate.subList(0, displaySize));
         } else {
             listOfShownTasks.addAll(listOfFirstDate);
         }
+    }
+    
+    /**
+     * Reads the task list from the data file
+     * @return
+     * @throws Exception status message if data file cannot be found
+     */
+    boolean updateListOfTasks() throws Exception {
+        try {
+            listOfTasks = storageObject.getItemList();
+        } catch (FileNotFoundException e) {
+            throw new Exception(ERROR_FILE_NOT_FOUND);
+        }
+        return true;
     }
     
     boolean isTimingInDay(Calendar time, Calendar date) {

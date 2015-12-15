@@ -44,7 +44,7 @@ public class CommandDelete extends Command {
 				int k = 0;
 				while (k < curAbstractTask.getTaskOccurrencesSize()) {
 					Task curTask = curAbstractTask.resolve(k);
-					if (taskToDelete.compareTo(curTask) == 0) {
+					if (taskToDelete.sameAs(curTask)) {
 						if(curAbstractTask.getTaskOccurrencesSize() == 1){
 							listOfTasks.remove(curAbstractTask);
 							deletedAbsTasks.add(curAbstractTask);

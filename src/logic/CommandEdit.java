@@ -39,7 +39,7 @@ public class CommandEdit extends Command {
             int k = 0;
             while (k < curAbstractTask.getTaskOccurrencesSize()) {
                 Task curTask = curAbstractTask.resolve(k);
-                if (taskToEdit.compareTo(curTask) == 0) {
+                if (taskToEdit.sameAs(curTask)) {
                     TaskOccurrence curOccurrence = curAbstractTask.getTaskOccurrences().remove(k);
                     
                     String finalName = (userTask.hasName()) ? userTask.getName() : curOccurrence.getName();

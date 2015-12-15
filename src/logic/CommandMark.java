@@ -37,10 +37,9 @@ public class CommandMark extends Command {
     String execute() {
         markedTaskOccs = new ArrayList<TaskOccurrence>();
         indexesToMarkBack = new ArrayList<Integer>();
-        
         for (int i = indexesToMark.size() - 1; i >= 0; i--) {
             int curIndex = indexesToMark.get(i);
-            Task taskToDelete = listOfShownTasks.get(curIndex - 1);
+            Task taskToMark = listOfShownTasks.get(curIndex - 1);
             
             // finds the task and deletes it
             int j = 0;
@@ -50,7 +49,7 @@ public class CommandMark extends Command {
                 int k = 0;
                 while (k < curAbstractTask.getTaskOccurrencesSize()) {
                     Task curTask = curAbstractTask.resolve(k);
-                    if (taskToDelete.compareTo(curTask) == 0) {
+                    if (taskToMark.sameAs(curTask)) {
                         TaskOccurrence taskOcc = curAbstractTask.getTaskOccurrence(k);
                         taskOcc.setDone(isDoneStatus);
                         markedTaskOccs.add(taskOcc);

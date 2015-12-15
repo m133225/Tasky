@@ -254,4 +254,30 @@ public class Task implements ITask {
             }
         }
     }
+    
+    public boolean sameAs(ITask taskObj){
+        String thisName = this.getName();
+        String taskObjName = taskObj.getName();
+        String thisLocation = this.getLocation();
+        String taskObjLocation = taskObj.getLocation();
+        Calendar thisStartingTime = this.getStartingTime();
+        Calendar taskObjStartingTime = taskObj.getStartingTime();
+        Calendar thisEndingTime = taskObj.getEndingTime();
+        Calendar taskObjEndingTime = taskObj.getEndingTime();
+        if (((thisName == null || taskObjName == null) && (thisName != taskObjName)) ||
+                ((thisLocation == null || taskObjLocation == null) && (thisLocation != taskObjLocation)) ||
+                ((thisStartingTime == null || taskObjStartingTime == null) && (thisStartingTime != taskObjStartingTime)) ||
+                ((thisEndingTime == null || taskObjEndingTime == null) && (thisEndingTime != taskObjEndingTime))){
+            return false;
+        }
+        
+        if (!(thisName == taskObjName || thisName.equals(taskObjName)) ||
+                !(thisLocation == taskObjLocation || thisLocation.equals(taskObjLocation)) ||
+                !(thisStartingTime == taskObjStartingTime || thisStartingTime.equals(taskObjStartingTime)) ||
+                !(thisEndingTime == taskObjEndingTime || thisEndingTime.equals(taskObjEndingTime))) {
+            return false;
+        }
+        
+        return true;
+    }
 }
