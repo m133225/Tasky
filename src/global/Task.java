@@ -264,10 +264,13 @@ public class Task implements ITask {
         Calendar taskObjStartingTime = taskObj.getStartingTime();
         Calendar thisEndingTime = taskObj.getEndingTime();
         Calendar taskObjEndingTime = taskObj.getEndingTime();
+        boolean thisIsDone = this.isDone();
+        boolean taskObjIsDone = taskObj.isDone();
         if (((thisName == null || taskObjName == null) && (thisName != taskObjName)) ||
                 ((thisLocation == null || taskObjLocation == null) && (thisLocation != taskObjLocation)) ||
                 ((thisStartingTime == null || taskObjStartingTime == null) && (thisStartingTime != taskObjStartingTime)) ||
-                ((thisEndingTime == null || taskObjEndingTime == null) && (thisEndingTime != taskObjEndingTime))){
+                ((thisEndingTime == null || taskObjEndingTime == null) && (thisEndingTime != taskObjEndingTime)) ||
+                (thisIsDone != taskObjIsDone)) {
             return false;
         }
         

@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CommandDelete extends Command {
+    // information needed to execute delete
 	ArrayList<Integer> indexesToDelete = null;
 	ArrayList<Task> listOfShownTasks = null;
 	ArrayList<TaskAbstraction> listOfTasks = null;
 	
+	// information kept for undo
 	ArrayList<TaskAbstraction> deletedAbsTasks = null;
 	ArrayList<TaskOccurrence> deletedTaskOccs = null;
 	ArrayList<Integer> indexesToAddBack = null;
@@ -38,24 +40,24 @@ public class CommandDelete extends Command {
 			
 			// finds the task and deletes it
 			int j = 0;
-			boolean foundTask = false;
-			while (j < listOfTasks.size() && !foundTask) {
+			int numberOfTasksDeleted = 0;
+			while (j < listOfTasks.size() && numberOfTasksDeleted < indexesToDelete.size()) {
 				TaskAbstraction curAbstractTask = listOfTasks.get(j);
 				int k = 0;
 				while (k < curAbstractTask.getTaskOccurrencesSize()) {
 					Task curTask = curAbstractTask.resolve(k);
 					if (taskToDelete.sameAs(curTask)) {
-						if(curAbstractTask.getTaskOccurrencesSize() == 1){
-							listOfTasks.remove(curAbstractTask);
-							deletedAbsTasks.add(curAbstractTask);
-							deletedTaskOccs.add(null);
-							indexesToAddBack.add(j);
-						} else {
-							deletedAbsTasks.add(curAbstractTask);
-							deletedTaskOccs.add(curAbstractTask.removeTaskOccurrence(k));
-							indexesToAddBack.add(k);
-						}
-						foundTask = true;
+                        if (curAbstractTask.getTaskOccurrencesSize() == 1) {
+                            listOfTasks.remove(curAbstractTask);
+                            deletedAbsTasks.add(curAbstractTask);
+                            deletedTaskOccs.add(null);
+                            indexesToAddBack.add(j);
+                        } else {
+                            deletedAbsTasks.add(curAbstractTask);
+                            deletedTaskOccs.add(curAbstractTask.removeTaskOccurrence(k));
+                            indexesToAddBack.add(k);
+                        }
+						numberOfTasksDeleted++;
 					}
 					k++;
 				}

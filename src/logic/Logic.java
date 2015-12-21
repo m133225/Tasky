@@ -403,28 +403,30 @@ public class Logic {
                     historyObject.clearUndoHistoryList();
                     return addCommand.execute();
                 case DELETE :
-                    indexList = parseIntList(argumentList);
-                    Command deleteCommand;
+                    logger.info("DELETE command detected");
                     try {
+                        indexList = parseIntList(argumentList);
+                        Command deleteCommand;
                     	deleteCommand = new CommandDelete(listOfTasks, listOfShownTasks, indexList);
+                        historyObject.pushCommand(deleteCommand, true);
+                        historyObject.clearUndoHistoryList();
+                        return deleteCommand.execute();
                     } catch (Exception e) {
                     	return e.getMessage();
                     }
-                    historyObject.pushCommand(deleteCommand, true);
-                    historyObject.clearUndoHistoryList();
-                    return deleteCommand.execute();
                 case EDIT :
                     logger.info("EDIT command detected");
-                    indexList = parseIntList(argumentList);
-                    Command editCommand;
                     try {
+                        indexList = parseIntList(argumentList);
+                        Command editCommand;
                         editCommand = new CommandEdit(listOfTasks, listOfShownTasks, indexList.get(0), userTask);
+
+                        historyObject.pushCommand(editCommand, true);
+                        historyObject.clearUndoHistoryList();
+                        return editCommand.execute();
                     } catch (Exception e) {
                         return e.getMessage();
                     }
-                    historyObject.pushCommand(editCommand, true);
-                    historyObject.clearUndoHistoryList();
-                    return editCommand.execute();
                 case DISPLAY :
                     logger.info("DISPLAY command detected");
                     return "";//displayItems(argumentList);
@@ -446,34 +448,37 @@ public class Logic {
                     return previousUndoCommand.execute();
                 case SAVETO :
                     logger.info("SAVETO command detected");
-                    return "";//saveFilePath(argumentList);
+                    Command saveToCommand = new CommandSaveTo(storageObject, argumentList.get(0), listOfTasks);
+                    return saveToCommand.execute();
                 case EXIT :
                     logger.info("EXIT command detected");
                     return exitProgram();
                 case MARK:
                     logger.info("MARK command detected");
-                    indexList = parseIntList(argumentList);
-                    Command markCommand;
                     try {
+                        indexList = parseIntList(argumentList);
+                        Command markCommand;
                         markCommand = new CommandMark(listOfTasks, listOfShownTasks, indexList, true);
+
+                        historyObject.pushCommand(markCommand, true);
+                        historyObject.clearUndoHistoryList();
+                        return markCommand.execute();
                     } catch (Exception e) {
                         return e.getMessage();
                     }
-                    historyObject.pushCommand(markCommand, true);
-                    historyObject.clearUndoHistoryList();
-                    return markCommand.execute();
                 case UNMARK:
                     logger.info("UNMARK command detected");
-                    indexList = parseIntList(argumentList);
-                    Command unmarkCommand;
                     try {
+                        indexList = parseIntList(argumentList);
+                        Command unmarkCommand;
                         unmarkCommand = new CommandMark(listOfTasks, listOfShownTasks, indexList, false);
+
+                        historyObject.pushCommand(unmarkCommand, true);
+                        historyObject.clearUndoHistoryList();
+                        return unmarkCommand.execute();
                     } catch (Exception e) {
                         return e.getMessage();
                     }
-                    historyObject.pushCommand(unmarkCommand, true);
-                    historyObject.clearUndoHistoryList();
-                    return unmarkCommand.execute();
                 case SEARCH:
                     logger.info("SEARCH command detected");
                     return "";//addSearchFilter(userTasks);
@@ -497,10 +502,14 @@ public class Logic {
      * @param argumentList
      * @return intList the resulting integer list
      */
-    ArrayList<Integer> parseIntList(ArrayList<String> argumentList) {
+    ArrayList<Integer> parseIntList(ArrayList<String> argumentList) throws Exception {
         ArrayList<Integer> intList = new ArrayList<Integer>();
-        for (int i = 0; i < argumentList.size(); i++) {
-            intList.add(Integer.parseInt(argumentList.get(i)));
+        try {
+            for (int i = 0; i < argumentList.size(); i++) {
+                intList.add(Integer.parseInt(argumentList.get(i)));
+            }
+        } catch (NumberFormatException e) {
+            throw new Exception("Error parsing arguments.");
         }
         return intList;
     }
