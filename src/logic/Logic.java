@@ -57,7 +57,7 @@ public class Logic {
     ArrayList<Task> listFilter = new ArrayList<Task>();
     boolean shouldShowDone = true;
     boolean shouldShowUndone = true;
-    boolean isHelpDisplayed = false;
+    boolean shouldDisplayHelp = false;
     
     int displaySize = DEFAULT_DISPLAY_SIZE;
     Level DEFAULT_LEVEL = Level.INFO;
@@ -353,7 +353,7 @@ public class Logic {
                 } else {
                 }*/
 
-                showUpdatedItems();
+                updateDisplay();
                 storageObject.writeItemList(listOfTasks);
             } catch (InterruptedException e) {
                 // something interrupted the UI's wait for user input
@@ -485,8 +485,8 @@ public class Logic {
                     return searchCommand.execute();
                 case HELP:
                     logger.info("HELP command detected");
-                   // toggleHelpDisplay();
-                    return "";//MESSAGE_SUCCESS_HELP;
+                    toggleHelpDisplay();
+                    return MESSAGE_SUCCESS_HELP;
                 case ALIAS:
                     logger.info("ALIAS command detected");
                     return "";//addAlias(argumentList);
@@ -495,6 +495,10 @@ public class Logic {
                     return ERROR_NO_COMMAND_HANDLER;
             }
         }
+    }
+    
+    void toggleHelpDisplay() {
+        shouldDisplayHelp ^= true;
     }
     
     /**
@@ -525,6 +529,26 @@ public class Logic {
         parsedIntArgumentList.clear();
         parsedIntArgumentList.addAll(hs);
         return parsedIntArgumentList;
+    }
+    
+    /**
+     * Updates display
+     */
+    void updateDisplay() {
+        if (shouldDisplayHelp) {
+            showHelpMessage();
+        } else {
+            showUpdatedItems();
+        }
+    }
+    
+    /**
+     * This methods retrieves the help message from Storage
+     * and shows it to the UI
+     */
+    boolean showHelpMessage() {
+        UIObject.showToUser(storageObject.getHelpMessage());
+        return true;
     }
     
     /**
