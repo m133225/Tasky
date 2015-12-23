@@ -481,7 +481,8 @@ public class Logic {
                     }
                 case SEARCH:
                     logger.info("SEARCH command detected");
-                    return "";//addSearchFilter(userTasks);
+                    Command searchCommand = new CommandSearch(listFilter, userTask);
+                    return searchCommand.execute();
                 case HELP:
                     logger.info("HELP command detected");
                    // toggleHelpDisplay();

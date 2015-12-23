@@ -906,10 +906,16 @@ public class Parser {
             } else {
                 if (isNewTask) {
                     throw new Exception(ERROR_EMPTY_TASK_NAME);
+                } else {
+                    taskName = null;
                 }
             }
         } else {
-            taskName = commandString;
+            if (commandString.length() == 0) {
+                taskName = null;
+            } else {
+                taskName = commandString;
+            }
         }
         if (taskName != null) {
             taskName = taskName.replaceAll("\\\\", "");
