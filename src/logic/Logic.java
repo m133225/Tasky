@@ -51,7 +51,7 @@ public class Logic {
     Parser parserObject;
     Storage storageObject;
     History historyObject;
-    Properties propObject;
+    PropertyHandler propHandler;
     ArrayList<TaskAbstraction> listOfTasks = new ArrayList<TaskAbstraction>();
     ArrayList<Task> listOfShownTasks = new ArrayList<Task>();
     ArrayList<Task> listFilter = new ArrayList<Task>();
@@ -170,7 +170,7 @@ public class Logic {
         try {
             initializeComponentObjects();
             initializeLogFile();
-            initializeConfigFile();
+            initializeProperties();
             updateListOfTasks();
         } catch (FileNotFoundException e) {
             UIObject.showToUser(ERROR_FILE_NOT_FOUND);
@@ -186,7 +186,6 @@ public class Logic {
         parserObject = new Parser();
         storageObject = new JsonFormatStorage(true);
         historyObject = new History();
-        propObject = new Properties();
     }
 
     /**
@@ -201,21 +200,15 @@ public class Logic {
      * 
      * @throws Exception with the respective status message
      */
-    void initializeConfigFile() throws Exception {
-        File configFile = new File(CONFIG_FILE_NAME);
-        if (configFile.exists()) {
-            try {
-                readConfigFile();
-            } catch (IOException e) {
-                throw new Exception(ERROR_READ_CONFIG_FILE);
-            }
-        } else {
-            try {
-                createAndWriteConfigFile(configFile);
-            } catch (IOException e) {
-                throw new Exception(ERROR_CREATE_CONFIG_FILE);
-            }
+    void initializeProperties() throws Exception {
+        Properties propObject = new Properties();
+        propObject.setProperty(PROPERTY_KEY_SAVE_FILE, DEFAULT_SAVE_FILE_PATH);
+        propObject.setProperty(PROPERTY_KEY_LOGGING_LEVEL, DEFAULT_LOGGING_LEVEL_STRING);
+        propObject.setProperty(PROPERTY_KEY_DISPLAY_SIZE, Integer.toString(DEFAULT_DISPLAY_SIZE));
+        for (int i = 0; i < PROPERTY_KEY_ALIAS_LIST.length; i++) {
+            propObject.setProperty(PROPERTY_KEY_ALIAS_LIST[i], "");
         }
+        propHandler = new PropertyHandler("config.txt", propObject);
         setReadConfig();
     }
 
@@ -226,9 +219,9 @@ public class Logic {
      * @throws IOException
      */
     void setReadConfig() throws IOException {
-        storageObject.saveFileToPath(propObject.getProperty(PROPERTY_KEY_SAVE_FILE));
-        String logLevelString = propObject.getProperty(PROPERTY_KEY_LOGGING_LEVEL);
-        displaySize = Integer.parseInt(propObject.getProperty(PROPERTY_KEY_DISPLAY_SIZE));
+        storageObject.saveFileToPath(propHandler.getProperty(PROPERTY_KEY_SAVE_FILE));
+        String logLevelString = propHandler.getProperty(PROPERTY_KEY_LOGGING_LEVEL);
+        displaySize = Integer.parseInt(propHandler.getProperty(PROPERTY_KEY_DISPLAY_SIZE));
         addAllConfigAliasToParser(); 
         switch (logLevelString) {
             case "WARNING":
@@ -252,27 +245,6 @@ public class Logic {
     }
 
     /**
-     * Creates a configuration file and writes the default values to it
-     * @param configFile
-     * @throws IOException
-     */
-    void createAndWriteConfigFile(File configFile) throws IOException {
-        configFile.createNewFile();
-        propObject.setProperty(PROPERTY_KEY_SAVE_FILE, DEFAULT_SAVE_FILE_PATH);
-        propObject.setProperty(PROPERTY_KEY_LOGGING_LEVEL, DEFAULT_LOGGING_LEVEL_STRING);
-        propObject.setProperty(PROPERTY_KEY_DISPLAY_SIZE, Integer.toString(DEFAULT_DISPLAY_SIZE));
-        setAllConfigAlias();
-        writeProperties();
-    }
-
-    void readConfigFile() throws FileNotFoundException, IOException {
-        BufferedReader bufReader = new BufferedReader(new FileReader(
-                new File(CONFIG_FILE_NAME)));
-        propObject.load(bufReader);
-        bufReader.close();
-    }
-
-    /**
      * Initialize the log file, and set the logger output format
      * to human-readable
      * 
@@ -288,15 +260,6 @@ public class Logic {
         logger.addHandler(logHandler);
     }
     
-     /**
-      * Sets the empty string for all the alias properties
-      */
-    void setAllConfigAlias(){
-        for (int i = 0; i < PROPERTY_KEY_ALIAS_LIST.length; i++) {
-            propObject.setProperty(PROPERTY_KEY_ALIAS_LIST[i], "");
-        }
-    }
-    
     /**
      * Add the alias lists read from the config file to the parser
      */
@@ -304,7 +267,7 @@ public class Logic {
         for (int i = 0; i < listOfDefaultKeywords.length
                 && i < PROPERTY_KEY_ALIAS_LIST.length; i++) {
             addConfigAlias(listOfDefaultKeywords[i],
-                    propObject.getProperty(PROPERTY_KEY_ALIAS_LIST[i]));
+                    propHandler.getProperty(PROPERTY_KEY_ALIAS_LIST[i]));
         }
     }
     
@@ -348,10 +311,6 @@ public class Logic {
                 
                 String executionResult = executeCommand(commandObject);
                 UIObject.showStatusToUser(executionResult);
-                /*if (commandObject.getCommandType() == UserInput.Type.HELP && isHelpDisplayed) {
-                    showHelpMessage();
-                } else {
-                }*/
 
                 updateDisplay();
                 storageObject.writeItemList(listOfTasks);
@@ -489,7 +448,9 @@ public class Logic {
                     return MESSAGE_SUCCESS_HELP;
                 case ALIAS:
                     logger.info("ALIAS command detected");
-                    return "";//addAlias(argumentList);
+                    String propertyKeyword = getPropertiesAliasString(argumentList.get(0));
+                    Command aliasCommand = new CommandAlias(parserObject, propHandler, argumentList, propertyKeyword);
+                    return aliasCommand.execute();
                 default :
                     logger.warning("Command type cannot be identified!");
                     return ERROR_NO_COMMAND_HANDLER;
@@ -950,22 +911,14 @@ public class Logic {
         }
     }
     
-    boolean updateProperties(String key, String value) throws IOException{
-        propObject.setProperty(key, value);
-        writeProperties();
-        return true;
-    }
-    
-    /**
-     * Writes the current property keys and values to the config file
-     * @return 
-     * @throws IOException if there is a problem with writing to file
-     */
-    boolean writeProperties() throws IOException{
-        BufferedWriter bufWriter = new BufferedWriter(new FileWriter(new File(CONFIG_FILE_NAME)));
-        propObject.store(bufWriter, null);
-        bufWriter.close();
-        return true;
+    String getPropertiesAliasString(String commandTypeIdentifier){
+        for (int i = 0; i < listOfDefaultKeywords.length
+                && i < PROPERTY_KEY_ALIAS_LIST.length; i++) {
+            if (commandTypeIdentifier.equals(listOfDefaultKeywords[i])) {
+                return PROPERTY_KEY_ALIAS_LIST[i];
+            }
+        }
+        return null;
     }
 
     String exitProgram() {

@@ -1063,9 +1063,9 @@ public class Parser {
      */
     public boolean addAlias(String existingCommandKeyword, String newCommandKeyword){
         int i = 0;
-        while(i < keywordLists.size()){
+        while (i < keywordLists.size()) {
             ArrayList<String> curList = keywordLists.get(i);
-            if(curList.contains(existingCommandKeyword)){
+            if (curList.contains(existingCommandKeyword)) {
                 curList.add(newCommandKeyword);
                 return true;
             }
