@@ -7,16 +7,20 @@ import logic.TaskAbstraction;
 import storage.Storage;
 
 public class CommandSaveTo extends Command {
+    public static final String SUCCESS_SAVETO_CHANGED = "Save file successfully changed.";
+    public static final String SUCCESS_SAVETO_SAME = "Save file not changed. Same file path has been specified.";
+    public static final String ERROR_SAVETO = "Error: Unable to get item list.";
     Storage storageObject = null;
     String newPath = null;
     ArrayList<TaskAbstraction> listOfTasks;
     
-    public CommandSaveTo(Storage storageObject, String newPath, ArrayList<TaskAbstraction> listOfTasks){
+    public CommandSaveTo(Storage storageObject, String newPath, ArrayList<TaskAbstraction> listOfTasks) {
         this.storageObject = storageObject;
         this.newPath = newPath;
         this.listOfTasks = listOfTasks;
     }
-    
+
+    @Override
     public boolean isUndoable() {
         return false;
     }
@@ -24,13 +28,18 @@ public class CommandSaveTo extends Command {
     @Override
     public String execute() {
         try {
-            storageObject.saveFileToPath(newPath);
+            boolean hasFilePathChanged = storageObject.saveFileToPath(newPath);
             
             listOfTasks.clear();
             listOfTasks.addAll(storageObject.getItemList());
-            return "New path saved.";
+
+            if (hasFilePathChanged) {
+                return SUCCESS_SAVETO_CHANGED;
+            } else {
+                return SUCCESS_SAVETO_SAME;
+            }
         } catch (IOException e) {
-            return "Error saving new path.";
+            return ERROR_SAVETO;
         }
     }
 

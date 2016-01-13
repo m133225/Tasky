@@ -3,7 +3,6 @@ package global;
 import java.util.ArrayList;
 
 public class UserInput {
-
     private Type commandType;
     private ArrayList<String> argumentList;
     private Task task;
@@ -60,48 +59,16 @@ public class UserInput {
     
     public void setArguments(String[] args) {
         argumentList = new ArrayList<String>();
-        for(int i = 0; i < args.length; i++){
+        for (int i = 0; i < args.length; i++) {
             argumentList.add(args[i]);
         }
     }
     
     //-------------has methods------------------//
     public boolean hasArgumentList() {
-        if(this.getArguments() == null) {
+        if (this.getArguments() == null) {
             return false;
         } 
         return true;
     }
-    /*
-    public boolean compareTo(UserInput cmd) {
-        boolean isTypeSame = false;
-        boolean isAListSame = false;
-        boolean isTasksSame = false;
-        
-		if (cmd.getCommandType().equals(this.getCommandType())) {
-			isTypeSame = true;
-		}
-
-		if (cmd.hasArgumentList() && this.hasArgumentList()) {
-			if (cmd.getArguments().size() == this.getArguments().size()) {
-				int similarCount = 0;
-				for (int i = 0; i < cmd.getArguments().size(); i++) {
-					if (cmd.getArguments().get(i)
-							.equals((this.getArguments().get(i)))) {
-						similarCount++;
-					}
-				}
-
-				if (similarCount == cmd.getArguments().size()) {
-					isAListSame = true;
-				}
-
-			}
-		} else if (cmd.hasArgumentList() == false
-				&& this.hasArgumentList() == false) {
-
-			isAListSame = true;
-		} 
-    }
-    */
 }

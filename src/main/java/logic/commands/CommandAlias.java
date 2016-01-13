@@ -6,13 +6,15 @@ import logic.PropertyHandler;
 import parser.Parser;
 
 public class CommandAlias extends Command {
+    private static final String SUCCESS_ALIAS = "Alias '%s' has been added.";
+    private static final String FAILURE_ALIAS = "Unable to add alias.";
     Parser parserObj = null;
     PropertyHandler propHandler = null;
     String existingKeyword = null;
     String newKeyword = null;
     String aliasPropertyString = null;
-    
-    public CommandAlias(Parser parserObj, PropertyHandler propHandler, ArrayList<String> argumentList, String aliasPropertiesString){
+
+    public CommandAlias(Parser parserObj, PropertyHandler propHandler, ArrayList<String> argumentList, String aliasPropertiesString) {
         this.parserObj = parserObj;
         this.propHandler = propHandler;
         this.existingKeyword = argumentList.get(0);
@@ -35,9 +37,9 @@ public class CommandAlias extends Command {
             } else {
                 propHandler.setProperty(aliasPropertyString, curProperty + ", " + newKeyword);
             }
-            return "Alias '" + newKeyword + "' has been added";
+            return String.format(SUCCESS_ALIAS, newKeyword);
         } else {
-            return "Unable to add alias.";
+            return FAILURE_ALIAS;
         }
     }
 

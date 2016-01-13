@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import global.Task;
 
 public class CommandFilter extends Command {
+    public static final String SUCCESS_CLEAR_FILTER = "Filters cleared.";
+    public static final String SUCCESS_FILTER = "Searching...";
     ArrayList<Task> listFilters = null;
     Task filterToAdd = null;
     
@@ -22,10 +24,10 @@ public class CommandFilter extends Command {
     public String execute() {
         if (!(filterToAdd.hasName() || filterToAdd.hasLocation() || filterToAdd.hasStartingTime() || filterToAdd.hasEndingTime())) {
             listFilters.clear();
-            return "Filters cleared";
+            return SUCCESS_CLEAR_FILTER;
         } else {
             listFilters.add(filterToAdd);
-            return "Searching";
+            return SUCCESS_FILTER;
         }
     }
 

@@ -8,6 +8,9 @@ import logic.TaskAbstraction;
 import logic.TaskOccurrence;
 
 public class CommandMark extends Command {
+    public static final String ERROR_INVALID_INDEX = "Error: Invalid index.";
+    public static final String SUCCESS_MARK = "Items(s) marked.";
+    public static final String SUCCESS_UNDO_MARK = "Undo: Item(s) marked.";
     private ArrayList<TaskAbstraction> listOfTasks;
     private ArrayList<Task> listOfShownTasks;
     private ArrayList<Integer> indexesToMark;
@@ -21,7 +24,7 @@ public class CommandMark extends Command {
         for (int i = indexesToMark.size() - 1; i >= 0; i--) {
             int curIndex = indexesToMark.get(i);
             if (curIndex < 1 || curIndex > listOfShownTasks.size()) {
-                throw new Exception("Invalid index");
+                throw new Exception(ERROR_INVALID_INDEX);
             }
         }
         
@@ -63,7 +66,7 @@ public class CommandMark extends Command {
                 j++;
             }
         }
-        return "Items marked";
+        return SUCCESS_MARK;
     }
 
     @Override
@@ -71,7 +74,7 @@ public class CommandMark extends Command {
         for (int i = indexesToMark.size() - 1; i >= 0; i--) {
             markedTaskOccs.get(i).setDone(!isDoneStatus);
         }
-        return "Undo: Item(s) marked.";
+        return SUCCESS_UNDO_MARK;
     }
 
 }

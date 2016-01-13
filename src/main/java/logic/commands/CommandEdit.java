@@ -8,6 +8,9 @@ import logic.TaskAbstraction;
 import logic.TaskOccurrence;
 
 public class CommandEdit extends Command {
+    public static final String SUCCESS_EDIT = "Item successfully edited.";
+    public static final String SUCCESS_UNDO_EDIT = "Undo: Item edited";
+    public static final String ERROR_INVALID_INDEX = "Error: Invalid index";
     ArrayList<Task> listOfShownTasks = null;
     ArrayList<TaskAbstraction> listOfTasks = null;
     Integer indexToEdit = null;
@@ -19,18 +22,20 @@ public class CommandEdit extends Command {
 
     public CommandEdit(ArrayList<TaskAbstraction> listOfTasks, ArrayList<Task> listOfShownTasks, int indexToEdit, Task userTask) throws Exception {
         if (indexToEdit < 1 || indexToEdit > listOfShownTasks.size()) {
-            throw new Exception("Invalid index");
+            throw new Exception(ERROR_INVALID_INDEX);
         }
         this.listOfTasks = listOfTasks;
         this.listOfShownTasks = listOfShownTasks;
         this.indexToEdit = indexToEdit;
         this.userTask = userTask;
     }
-    
+
+    @Override
     public boolean isUndoable() {
         return true;
     }
 
+    @Override
     public String execute() {
         Task taskToEdit = listOfShownTasks.get(indexToEdit - 1);
         // finds the task and edits it
@@ -63,15 +68,16 @@ public class CommandEdit extends Command {
             }
             j++;
         }
-        return "Edited";
+        return SUCCESS_EDIT;
     }
 
+    @Override
     public String undo() {
         TaskOccurrence oldTaskOcc = editedTaskOcc;
         editedTaskOcc = editedAbstractTask.getTaskOccurrences().remove((int)indexToEditBack);
         editedAbstractTask.getTaskOccurrences().add(indexToEditBack, oldTaskOcc);
         
-        return "Undo: Item Edited";
+        return SUCCESS_UNDO_EDIT;
     }
 
 }

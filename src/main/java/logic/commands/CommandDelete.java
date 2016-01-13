@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class CommandDelete extends Command {
+    public static final String SUCCESS_DELETE = "Item(s) deleted.";
+    public static final String SUCCESS_UNDO_DELETE = "Undo: Item(s) added back.";
+    public static final String ERROR_INVALID_INDEX = "Error: Invalid index.";
     // information needed to execute delete
 	ArrayList<Integer> indexesToDelete = null;
 	ArrayList<Task> listOfShownTasks = null;
@@ -24,14 +27,15 @@ public class CommandDelete extends Command {
         for (int i = indexesToDelete.size() - 1; i >= 0; i--) {
             int curIndex = indexesToDelete.get(i);
             if (curIndex < 1 || curIndex > listOfShownTasks.size()) {
-                throw new Exception("Invalid index");
+                throw new Exception(ERROR_INVALID_INDEX);
             }
         }
         this.indexesToDelete = indexesToDelete;
         this.listOfShownTasks = listOfShownTasks;
         this.listOfTasks = listOfTasks;
     }
-	
+
+    @Override
 	public String execute() {
 	    deletedAbsTasks = new ArrayList<TaskAbstraction>();
 	    deletedTaskOccs = new ArrayList<TaskOccurrence>();
@@ -66,7 +70,7 @@ public class CommandDelete extends Command {
 				j++;
 			}
 		}
-		return "Item deleted";
+		return SUCCESS_DELETE;
 	}
 
 	@Override
@@ -78,9 +82,10 @@ public class CommandDelete extends Command {
                 deletedAbsTasks.get(i).addTaskOccurrence(indexesToAddBack.get(i), deletedTaskOccs.get(i));
             }
         }
-		return "Undo: Item(s) added back.";
+		return SUCCESS_UNDO_DELETE;
 	}
 
+	@Override
 	public boolean isUndoable(){
 		return true;
 	}

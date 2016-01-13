@@ -252,7 +252,7 @@ public class Task implements ITask {
         }
     }
     
-    public boolean sameAs(ITask taskObj){
+    public boolean sameAs(ITask taskObj) {
         String thisName = this.getName();
         String taskObjName = taskObj.getName();
         String thisLocation = this.getLocation();

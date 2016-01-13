@@ -14,7 +14,7 @@ public class History {
     ArrayList<Command> commandUndoHistoryList = new ArrayList<Command>();
     
     
-    boolean clearUndoHistoryList(){
+    boolean clearUndoHistoryList() {
         commandUndoHistoryList.clear();
         return true;
     }

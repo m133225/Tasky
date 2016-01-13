@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 public class CommandAdd extends Command {
+	private static final String SUCCESS_ADD = "Task '%s' successfully added.";
+    private static final String SUCCESS_UNDO_ADD = "Undo: Task successfully deleted.";
 	TaskAbstraction taskToAdd;
 	private ArrayList<TaskAbstraction> listOfTasks;
 	
@@ -21,20 +23,23 @@ public class CommandAdd extends Command {
         taskToAdd = new TaskAbstraction(taskName, taskStartingTime, taskEndingTime, taskLocation);
         taskToAdd.addTaskOccurrence(new TaskOccurrence());
     }
-	
+
+	@Override
 	public String execute() {
 		listOfTasks.add(taskToAdd);
 
-		return "Task '"+ taskToAdd.getName() +"' successfully added.";
+		return String.format(SUCCESS_ADD, taskToAdd.getName());
 	}
 
+	@Override
 	public String undo() {
 		listOfTasks.remove(taskToAdd);
 		
-		return "Undo: Task successfully deleted.";
+		return SUCCESS_UNDO_ADD;
 	}
 
-	public boolean isUndoable(){
+	@Override
+	public boolean isUndoable() {
 		return true;
 	}
 

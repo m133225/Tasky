@@ -1,7 +1,7 @@
 package logic.commands;
 
 public abstract class Command {
-	abstract public boolean isUndoable();
-	abstract public String execute();
-	abstract public String undo();
+    public abstract boolean isUndoable();
+    public abstract String execute();
+    public abstract String undo();
 }
