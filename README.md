@@ -115,7 +115,7 @@ This is an example to remove the task that is currently number one, two, four, s
 
 This is an example to remove the task that is currently from number one to number six in the list.
 
-To get the list of tasks, you can issue a display command. This command will also delete the task in the storage file. It is possible to revert the command by issuing an undo command. For more info, please take a look at [display](#displaying-tasks) and [undo](#undoing-commands)
+To get the list of tasks, you can issue a display command. This command will also delete the task in the main.java.storage file. It is possible to revert the command by issuing an undo command. For more info, please take a look at [display](#displaying-tasks) and [undo](#undoing-commands)
 
 ## Marking tasks as completed
 (command: mark)

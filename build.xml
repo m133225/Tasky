@@ -10,7 +10,7 @@
         <jar destfile="${dir.jarfile}/Tasky.jar">
             <manifest>
                 <attribute name="Main-Class" value="org.eclipse.jdt.internal.jarinjarloader.JarRsrcLoader"/>
-                <attribute name="Rsrc-Main-Class" value="logic.Logic"/>
+                <attribute name="Rsrc-Main-Class" value="main.java.logic.Logic"/>
                 <attribute name="Class-Path" value="."/>
                 <attribute name="Rsrc-Class-Path" value="./ gson-2.3.1.jar"/>
             </manifest>
