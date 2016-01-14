@@ -30,6 +30,11 @@ public class Task implements ITask {
         this.endingTime = endingTime;
     }
 
+    public Task(String name, String location) {
+        this.name = name;
+        this.location = location;
+    }
+
     public Task(String name, Calendar endingTime, String location) {
         this.name = name;
         this.endingTime = endingTime;
